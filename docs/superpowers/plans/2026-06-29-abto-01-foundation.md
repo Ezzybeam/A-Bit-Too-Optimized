@@ -200,7 +200,7 @@ git commit -m "chore: configure stonecutter with three version branches"
 
 **Interfaces:**
 - Consumes: per-branch properties from Task 2 (`minecraft_version`, `fabric_loader_version`, `fabric_api_version`), shared properties from Task 1 (`mod_id`, `mod_version`, `maven_group`).
-- Produces: a Loom build that compiles against the active branch with NO mappings (non-obfuscated) and produces a jar via the standard `jar` task. Defines `archivesName` as `${mod_id}-${minecraft_version}`.
+- Produces: a Loom build that compiles against the active branch with NO mappings (non-obfuscated) and produces a jar via the standard `jar` task. The jar is named `a-bit-too-optimized-<minecraft_version>-<abto_version>.jar` (archivesName = `${rootProject.name}-${minecraft_version}`, version = the mod version).
 
 Reference implementation: the official Fabric example mod, 26.1 branch:
 https://github.com/FabricMC/fabric-example-mod/tree/26.1 (use its build.gradle as the source of truth for the modern non-remapping setup).
@@ -229,8 +229,9 @@ val fabricLoaderVersion = project.property("fabric_loader_version") as String
 val fabricApiVersion = project.property("fabric_api_version") as String
 
 group = mavenGroup
-version = "$modVersion+$minecraftVersion"
-base.archivesName.set("$modId-$minecraftVersion")
+// Jar name pattern: a-bit-too-optimized-<minecraft_version>-<abto_version>.jar
+version = modVersion
+base.archivesName.set("${rootProject.name}-$minecraftVersion")
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
@@ -402,7 +403,7 @@ Run:
 ```bash
 ./gradlew build --stacktrace
 ```
-Expected: BUILD SUCCESSFUL. Produces `build/libs/abto-26.1.2-0.1.0+26.1.2.jar` (name reflects the active branch). If compilation fails on a Minecraft symbol, that is unexpected at this stage since no Minecraft APIs are used yet; re-check imports.
+Expected: BUILD SUCCESSFUL. Produces `versions/26.1.2/build/libs/a-bit-too-optimized-26.1.2-0.1.0.jar` (name reflects the active branch). If compilation fails on a Minecraft symbol, that is unexpected at this stage since no Minecraft APIs are used yet; re-check imports.
 
 - [ ] **Step 4: Commit**
 
@@ -470,7 +471,7 @@ Run:
 ```bash
 ./gradlew chiseledBuild --stacktrace
 ```
-Expected: Stonecutter builds all three branches. Three jars appear under `versions/*/build/libs/` (or `build/libs/` depending on Stonecutter output config), named `abto-1.21.11-...`, `abto-26.1.2-...`, `abto-26.2-...`. If a non-primary branch fails to resolve dependencies, update that branch's `versions/<v>/gradle.properties` using https://fabricmc.net/develop/ and re-run. If 26.2 has no Fabric API build yet, note it, skip that branch for now, and proceed with 1.21.11 and 26.1.2 (the spec's risk section anticipates this).
+Expected: `./build-all.sh` builds both modern branches (Stonecutter 0.9.6 does not expose the older `chiseledBuild` registration API, so the script switches the active version per build). Two jars appear under `versions/*/build/libs/`, named `a-bit-too-optimized-26.1.2-0.1.0.jar` and `a-bit-too-optimized-26.2-0.1.0.jar`. If a branch fails to resolve dependencies, update that branch's `versions/<v>/gradle.properties` using https://fabricmc.net/develop/ and re-run.
 
 - [ ] **Step 2: Switch active branch and launch the dev client**
 
@@ -485,7 +486,7 @@ Reach the title screen with no crash. Close the game.
 
 - [ ] **Step 3: Sanity-check the jar in a real instance (manual)**
 
-Copy `abto-26.1.2-*.jar` into your 26.1.2 Modrinth instance's `mods` folder (alongside Fabric API), launch through the launcher, and confirm the same log line appears and the game reaches the title screen. This confirms the real distribution path works, not just the dev runtime.
+Copy `a-bit-too-optimized-26.1.2-0.1.0.jar` into your 26.1.2 Modrinth instance's `mods` folder (alongside Fabric API), launch through the launcher, and confirm the same log line appears and the game reaches the title screen. This confirms the real distribution path works, not just the dev runtime.
 
 - [ ] **Step 4: Create `README.md`**
 

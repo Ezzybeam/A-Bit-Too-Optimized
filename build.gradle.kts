@@ -11,8 +11,11 @@ val fabricLoaderVersion = project.property("fabric_loader_version") as String
 val fabricApiVersion = project.property("fabric_api_version") as String
 
 group = mavenGroup
-version = "$modVersion+$minecraftVersion"
-base.archivesName.set("$modId-$minecraftVersion")
+// Jar name pattern: a-bit-too-optimized-<minecraft_version>-<abto_version>.jar
+// archivesName carries the slug + Minecraft version; version carries the mod
+// version, so Gradle joins them as <archivesName>-<version>.jar.
+version = modVersion
+base.archivesName.set("${rootProject.name}-$minecraftVersion")
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
