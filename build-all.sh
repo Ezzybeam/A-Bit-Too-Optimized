@@ -19,5 +19,12 @@ done
 echo "==> Resetting active version to $DEFAULT"
 ./gradlew "Set active project to $DEFAULT"
 
-echo "==> Done. Jars:"
-find versions -path "*build/libs/*.jar" ! -name "*-sources.jar"
+# Collect the release jars (not the -sources jars) into a single dist/ folder
+# so they are easy to find instead of being buried per-version.
+echo "==> Collecting release jars into dist/"
+mkdir -p dist
+rm -f dist/*.jar
+find versions -path "*build/libs/*.jar" ! -name "*-sources.jar" -exec cp {} dist/ \;
+
+echo "==> Done. Release jars in dist/:"
+ls -1 dist/*.jar
