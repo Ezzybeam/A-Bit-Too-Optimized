@@ -206,7 +206,49 @@ in one data table so they are easy to read and adjust.
   pack.
 - Shaders (Iris): ABTO never overrides Iris settings, culling respects shadow
   passes, and presets have shader-aware variants.
+- Resource and texture packs (including HD/PBR packs): ABTO never overrides pack
+  choices and its settings must not break pack rendering.
+- Essential: ABTO must coexist with Essential. Note: Sodium itself sometimes
+  conflicts with Essential; that is a Sodium/Essential issue ABTO cannot fix, but
+  ABTO must not add to it, and where ABTO provides its own optimization (without
+  Sodium) it gives an Essential-compatible path.
+- Cosmetic and overlay mods that hook rendering must keep working: Hypixel+
+  (Hypixel Mod / "Hypixel Plus"), MinecraftCapes and other cape mods, and
+  Litematica (schematic rendering). ABTO's culling and render tweaks must not hide
+  capes, schematic overlays, or HUD elements these mods draw.
 - Not built to run inside Fabulously Optimized.
+
+## Performance approach and FPS goal
+
+- Stretch goal: help the user reach about 1000 FPS looking at the open sky on
+  capable hardware (baseline measured at 600 to 700 FPS uncapped). This is a target
+  to chase, not a guarantee; achievable FPS depends on the machine.
+- The biggest sky-FPS levers, in order, and where they live:
+  1. Render fewer sky elements: clouds, stars, sun and moon, sky gradient, and fog.
+     Vanilla exposes only clouds and (indirectly) fog; the rest need ABTO's own
+     render mixins (Milestone 4) or Sodium Extra when present (Milestone 5).
+  2. Sodium when installed: ABTO writes Sodium's config to a high-performance
+     profile that matches the chosen preset (Milestone 5 adapter).
+  3. Lower-overhead vanilla settings the preset already covers (render distance,
+     graphics mode, particles, entity distance) - Milestone 2.
+- Config parity with Fabulously Optimized "and more": FO's performance is mostly
+  Sodium plus Lithium with tuned configs (Sodium Extra, Reese's Sodium Options,
+  Lithium). ABTO's preset engine targets the same knobs FO tunes (via the mod-config
+  adapters in Milestone 5) and adds its own sky/render toggles (Milestone 4) so it
+  helps even when those mods are absent. Parity is an ongoing effort tracked per
+  adapter, not a single task.
+- New preset axes for sky and render reduction (added to the preset model as the
+  Milestone 4 render features land): hideClouds, hideStars, hideSunMoon, hideSky,
+  reduceFog, plus a "max FPS" framerate-limit axis (default unlimited). Each is an
+  ABTO-owned toggle implemented by our mixins, independent of other mods.
+
+## Release archiving
+
+- Every published build is archived. The build process keeps a versioned copy of
+  each version line's jar (named a-bit-too-optimized-<minecraft_version>-<abto_version>.jar)
+  under an archive directory, so older mod versions remain available and are not
+  overwritten by a new build. Archiving is gitignored build output, not committed
+  source.
 
 ## Error handling
 

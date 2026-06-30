@@ -26,5 +26,15 @@ mkdir -p dist
 rm -f dist/*.jar
 find versions -path "*build/libs/*.jar" ! -name "*-sources.jar" -exec cp {} dist/ \;
 
-echo "==> Done. Release jars in dist/:"
+# Archive every build so older mod versions stay available. Unlike dist/ (which
+# only holds the latest), archive/ accumulates and is never cleared. Jars carry
+# the Minecraft and mod version in their names, so versions never collide.
+echo "==> Archiving jars into archive/"
+mkdir -p archive
+find versions -path "*build/libs/*.jar" ! -name "*-sources.jar" -exec cp -n {} archive/ \;
+
+echo "==> Done."
+echo "Latest jars (dist/):"
 ls -1 dist/*.jar
+echo "Archived versions (archive/):"
+ls -1 archive/*.jar
