@@ -31,6 +31,7 @@ dependencies {
     implementation("net.fabricmc.fabric-api:fabric-api:$fabricApiVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.test {

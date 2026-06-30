@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "A Bit Too Optimized",
+  "description": "A performance tune-up mod with quality presets. Client side only.",
+  "authors": ["ezzybeam"],
+  "license": "ARR",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.abto.AbtoClient"]
+  },
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "${mc_dep_range}",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
