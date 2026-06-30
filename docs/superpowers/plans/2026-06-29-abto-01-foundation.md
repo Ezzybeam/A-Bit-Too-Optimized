@@ -6,7 +6,9 @@
 
 **Architecture:** One Gradle project using the new `net.fabricmc.fabric-loom` plugin with Mojang official mappings, driven by Stonecutter for multi-version builds. A single client entrypoint logs a startup line so we can confirm the mod loads. No features yet; this milestone only proves the toolchain and project skeleton work end to end.
 
-**Tech Stack:** Java 21, Gradle (wrapper), Fabric Loom (`net.fabricmc.fabric-loom`), Stonecutter 0.9.6, Mojang official mappings, Fabric API, Fabric Loader, JUnit 5 (for the unit-test harness used in later milestones).
+**Tech Stack:** Java 21, Gradle 9.4.0 (wrapper), Fabric Loom 1.15 (`net.fabricmc.fabric-loom`), Stonecutter 0.9.6, Mojang official mappings, Fabric API, Fabric Loader, JUnit 5 (for the unit-test harness used in later milestones).
+
+> Toolchain note (added after Task 2): the modern Minecraft 26.x toolchain is Gradle 9.x + Loom 1.15 + Stonecutter 0.9.x. Loom 1.12+ supports Gradle 9, and Stonecutter 0.9.x requires Gradle 9. An earlier draft of this plan pinned Gradle 8.10; that was corrected to Gradle 9.4.0.
 
 ## Global Constraints
 
@@ -203,7 +205,7 @@ git commit -m "chore: configure stonecutter with three version branches"
 
 ```kotlin
 plugins {
-    id("net.fabricmc.fabric-loom") version "1.11.+"
+    id("net.fabricmc.fabric-loom") version "1.15.+"
     id("dev.kikugie.stonecutter")
 }
 

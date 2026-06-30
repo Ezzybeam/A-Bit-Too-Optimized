@@ -27,8 +27,9 @@ characters in such generated files.
 
 ## Build
 
-- Java 21 required. The Gradle wrapper is pinned to Gradle 8.10 because Fabric
-  Loom requires Gradle 8.x, even though a newer system Gradle may be installed.
+- Java 21 required. The Gradle wrapper is pinned to Gradle 9.4.0. The modern
+  Minecraft 26.x toolchain is Gradle 9.x + Fabric Loom 1.15 + Stonecutter 0.9.x
+  (Loom 1.12+ supports Gradle 9; Stonecutter 0.9.x requires Gradle 9).
 - Active version build: `./gradlew build`
 - All versions: `./gradlew chiseledBuild`
 - Switch active version: `./gradlew "Set active project to 26.1.2"`
