@@ -2,7 +2,8 @@
 
 A client-side Minecraft Fabric performance tune-up mod with quality presets,
 a first-run setup wizard, hardware detection, and its own runtime
-optimizations. Multi-version (1.21.11, 26.1.x, 26.2.x) via Stonecutter.
+optimizations. Multi-version via Stonecutter: 26.1.x and 26.2.x now; 1.21.11
+(legacy obfuscated toolchain) is deferred to a later milestone.
 
 See `docs/superpowers/specs/` for the design and `docs/superpowers/plans/` for
 implementation plans.
@@ -27,13 +28,19 @@ characters in such generated files.
 
 ## Build
 
-- Java 21 required. The Gradle wrapper is pinned to Gradle 9.4.0. The modern
-  Minecraft 26.x toolchain is Gradle 9.x + Fabric Loom 1.15 + Stonecutter 0.9.x
-  (Loom 1.12+ supports Gradle 9; Stonecutter 0.9.x requires Gradle 9).
+- JDK 25 required for the build toolchain (Minecraft 26.1+ needs Java 25). It is
+  auto-discovered via `org.gradle.java.installations.paths` in gradle.properties.
+  Gradle itself launches on the PATH Java (21+ is fine); only the compile/run
+  toolchain must be 25.
+- The Gradle wrapper is pinned to Gradle 9.4.0. The modern Minecraft 26.x
+  toolchain is Gradle 9.x + Fabric Loom 1.15 + Stonecutter 0.9.x (Loom 1.12+
+  supports Gradle 9; Stonecutter 0.9.x requires Gradle 9).
 - Active version build: `./gradlew build`
-- All versions: `./gradlew chiseledBuild`
+- All versions: `./build-all.sh` (Stonecutter 0.9.6 does not expose a
+  `chiseledBuild` task; the script switches the active version per build).
 - Switch active version: `./gradlew "Set active project to 26.1.2"`
 - Dev client: `./gradlew runClient`
+- Unit tests: `./gradlew test`
 
 ## Git
 

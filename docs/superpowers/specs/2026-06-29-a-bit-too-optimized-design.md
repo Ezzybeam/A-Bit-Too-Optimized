@@ -57,8 +57,10 @@ Mod loader: Fabric (with Fabric API as a dependency).
 - Client-side only. This is a client performance mod. Its fabric.mod.json declares
   the client environment, so it is not required on servers and does not affect
   server-side gameplay. It must not break joining vanilla or modded servers.
-- Java 21 toolchain. Minecraft 1.21.11 and the 26.x line run on Java 21, so the mod
-  is built and run on Java 21.
+- Java toolchain per version line. Minecraft 26.1+ requires Java 25, so the 26.x
+  builds use a Java 25 toolchain. (1.21.11, when added later, uses Java 21.) This
+  spec originally assumed Java 21 throughout; corrected after the 26.x toolchain
+  was confirmed. See the foundation plan for details.
 - Mod id: abto (short, lowercase, no conflicts expected). Display name: A Bit Too
   Optimized.
 - Distribution: published to Modrinth, one file per version line. macOS and Windows
