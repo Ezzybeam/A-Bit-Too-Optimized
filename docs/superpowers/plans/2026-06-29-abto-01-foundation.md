@@ -2,9 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Produce a buildable, loadable, empty Fabric client mod that compiles and runs in-game on all three target Minecraft version lines (1.21.11, 26.1.x, 26.2.x) from one codebase.
+**Goal:** Produce a buildable, loadable, empty Fabric client mod that compiles and runs in-game on the two modern target Minecraft version lines (26.1.x, 26.2.x) from one codebase. (1.21.11 is deferred to a later milestone because it uses the legacy obfuscated toolchain.)
 
-**Architecture:** One Gradle project using the new `net.fabricmc.fabric-loom` plugin with Mojang official mappings, driven by Stonecutter for multi-version builds. A single client entrypoint logs a startup line so we can confirm the mod loads. No features yet; this milestone only proves the toolchain and project skeleton work end to end.
+**Architecture:** One Gradle project using the new `net.fabricmc.fabric-loom` plugin, driven by Stonecutter for multi-version builds. Minecraft 26.1+ ships NON-obfuscated, so there is no mappings step: omit the `mappings` line, use `implementation` (not `modImplementation`), and use the `jar` task (not `remapJar`). A single client entrypoint logs a startup line so we can confirm the mod loads. No features yet; this milestone only proves the toolchain and project skeleton work end to end.
+
+**Deferred (1.21.11):** 1.21.11 is the last obfuscated version. Supporting it needs the legacy `net.fabricmc.fabric-loom-remap` plugin, a mappings line, `modImplementation`, `remapJar`, and Java 21. It will be added as its own Stonecutter branch with per-branch build conditionals in a later milestone. The verified 1.21.11 values were: fabric_loader 0.19.3, fabric_api 0.141.4+1.21.11, range >=1.21.11 <1.21.12.
 
 **Tech Stack:** Java 21, Gradle 9.4.0 (wrapper), Fabric Loom 1.15 (`net.fabricmc.fabric-loom`), Stonecutter 0.9.6, Mojang official mappings, Fabric API, Fabric Loader, JUnit 5 (for the unit-test harness used in later milestones).
 
@@ -15,12 +17,12 @@
 - Mod id: `abto`. Display name: `A Bit Too Optimized`.
 - Client-side only: `fabric.mod.json` declares the `client` environment. The mod must never be required on a server.
 - No em dashes and no emojis, and plain ASCII only, in all PROJECT-AUTHORED files (Java source, config files we write, GUI text, log messages, docs we author). This does NOT apply to vendor or tool-generated files we do not hand-write (the Gradle wrapper `gradlew`, `gradlew.bat`, `gradle/wrapper/`), which may contain non-ASCII characters in generated comments. Do not hand-edit generated files to satisfy this rule. See CLAUDE.md.
-- Java 21 toolchain for build and run.
-- Mappings: Mojang official mappings on every branch, for naming consistency across versions.
-- Target version lines and their declared ranges:
-  - `1.21.11` branch, depends range `>=1.21.11 <1.21.12`
+- Java 25 toolchain for build and run. Minecraft 26.1+ requires Java 25 (Java 21 will not build or run it). JDK 25 (Temurin) is installed in a user dir at `/Users/ezzybeam/.jdks/jdk-25.0.3+9/Contents/Home` and referenced via `org.gradle.java.installations.paths` in gradle.properties so Gradle's toolchain finds it. Gradle itself runs on the PATH Java (21), which is fine; the build toolchain is 25.
+- Mappings: NONE. Minecraft 26.1+ is non-obfuscated, so the new `net.fabricmc.fabric-loom` plugin does not remap. Do not add a `mappings` line. Use `implementation` (not `modImplementation`) and the `jar` task (not `remapJar`).
+- Target version lines and their declared ranges (foundation = modern toolchain only):
   - `26.1.x` branch (primary, tested on 26.1.2), depends range `>=26.1 <26.2`
   - `26.2.x` branch, depends range `>=26.2 <26.3`
+  - `1.21.11` is DEFERRED (legacy obfuscated toolchain) to a later milestone.
 - Stonecutter is the only sanctioned way to express per-version code differences.
 - Platforms: macOS and Windows are the tested platforms.
 
@@ -30,10 +32,9 @@
 
 This milestone creates the project skeleton. Files and their single responsibilities:
 
-- `settings.gradle.kts` - Gradle settings, plugin management, Stonecutter version setup (declares the three branches).
-- `build.gradle.kts` - Loom + Fabric build config, dependencies, Java 21 toolchain, mapping/version values read from per-branch properties.
-- `gradle.properties` - shared properties (mod id, version, group).
-- `versions/1.21.11/gradle.properties` - per-branch versions (Minecraft, Fabric Loader, Fabric API, mappings) for 1.21.11.
+- `settings.gradle.kts` - Gradle settings, plugin management, Stonecutter version setup (declares the two modern branches: 26.1.2, 26.2).
+- `build.gradle.kts` - Loom + Fabric build config, dependencies, Java 25 toolchain, NO mappings (non-obfuscated), version values read from per-branch properties.
+- `gradle.properties` - shared properties (mod id, version, group) and the JDK 25 installation path.
 - `versions/26.1.2/gradle.properties` - per-branch versions for the 26.1.x line (developed on 26.1.2).
 - `versions/26.2/gradle.properties` - per-branch versions for the 26.2.x line.
 - `src/main/java/com/abto/AbtoClient.java` - the client entrypoint; logs a startup line. Single responsibility: prove the mod loads.
@@ -192,16 +193,25 @@ git commit -m "chore: configure stonecutter with three version branches"
 
 ---
 
-## Task 3: Loom build configuration with Mojang mappings
+## Task 3: Loom build configuration (modern, non-obfuscated)
 
 **Files:**
 - Create: `build.gradle.kts`
 
 **Interfaces:**
 - Consumes: per-branch properties from Task 2 (`minecraft_version`, `fabric_loader_version`, `fabric_api_version`), shared properties from Task 1 (`mod_id`, `mod_version`, `maven_group`).
-- Produces: a Loom build that compiles against the active branch using Mojang official mappings and produces a remapped jar. Defines `archivesName` as `${mod_id}-${minecraft_version}`.
+- Produces: a Loom build that compiles against the active branch with NO mappings (non-obfuscated) and produces a jar via the standard `jar` task. Defines `archivesName` as `${mod_id}-${minecraft_version}`.
+
+Reference implementation: the official Fabric example mod, 26.1 branch:
+https://github.com/FabricMC/fabric-example-mod/tree/26.1 (use its build.gradle as the source of truth for the modern non-remapping setup).
 
 - [ ] **Step 1: Create `build.gradle.kts`**
+
+Key differences from a pre-26.1 setup (do NOT use the old form):
+- NO `mappings(...)` line. Minecraft is non-obfuscated; adding mappings fails with "Cannot use Mojang mappings in a non-obfuscated environment".
+- Use `implementation(...)`, NOT `modImplementation(...)`, for fabric-loader and fabric-api.
+- The build artifact is the standard `jar` task output; there is no `remapJar`.
+- Java toolchain language version is 25, not 21.
 
 ```kotlin
 plugins {
@@ -221,7 +231,7 @@ version = "$modVersion+$minecraftVersion"
 base.archivesName.set("$modId-$minecraftVersion")
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
     withSourcesJar()
 }
 
@@ -232,10 +242,9 @@ repositories {
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
-    // Mojang official mappings, consistent across all branches.
-    mappings(loom.officialMojangMappings())
-    modImplementation("net.fabricmc:fabric-loader:$fabricLoaderVersion")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:$fabricApiVersion")
+    // No mappings line: Minecraft 26.1+ is non-obfuscated.
+    implementation("net.fabricmc:fabric-loader:$fabricLoaderVersion")
+    implementation("net.fabricmc.fabric-api:fabric-api:$fabricApiVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
 }
@@ -257,6 +266,8 @@ tasks.processResources {
     }
 }
 ```
+
+Note: the exact Loom configuration API for non-obfuscated builds is evolving. Treat the fabric-example-mod 26.1 branch build.gradle as authoritative; if `implementation` for fabric-loader/fabric-api does not resolve or Loom expects a different configuration name, follow the example mod and record the deviation.
 
 - [ ] **Step 2: Read the gradle.properties values into the build**
 
@@ -312,7 +323,7 @@ git commit -m "chore: add loom build config with mojang mappings"
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
     "minecraft": "${mc_dep_range}",
-    "java": ">=21",
+    "java": ">=25",
     "fabric-api": "*"
   }
 }
