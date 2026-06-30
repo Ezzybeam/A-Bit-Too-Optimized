@@ -12,7 +12,7 @@
 
 - Mod id: `abto`. Display name: `A Bit Too Optimized`.
 - Client-side only: `fabric.mod.json` declares the `client` environment. The mod must never be required on a server.
-- No em dashes and no emojis anywhere in code, GUI text, config comments, or log messages. Plain ASCII only.
+- No em dashes and no emojis, and plain ASCII only, in all PROJECT-AUTHORED files (Java source, config files we write, GUI text, log messages, docs we author). This does NOT apply to vendor or tool-generated files we do not hand-write (the Gradle wrapper `gradlew`, `gradlew.bat`, `gradle/wrapper/`), which may contain non-ASCII characters in generated comments. Do not hand-edit generated files to satisfy this rule. See CLAUDE.md.
 - Java 21 toolchain for build and run.
 - Mappings: Mojang official mappings on every branch, for naming consistency across versions.
 - Target version lines and their declared ranges:
