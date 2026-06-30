@@ -219,12 +219,14 @@ plugins {
     id("dev.kikugie.stonecutter")
 }
 
-val modId: String by project
-val modVersion: String by project
-val mavenGroup: String by project
-val minecraftVersion: String by project
-val fabricLoaderVersion: String by project
-val fabricApiVersion: String by project
+// Read properties by their real snake_case keys. Do NOT use `by project`, which
+// would look up a key matching the val name (e.g. mavenGroup) instead of maven_group.
+val modId = project.property("mod_id") as String
+val modVersion = project.property("mod_version") as String
+val mavenGroup = project.property("maven_group") as String
+val minecraftVersion = project.property("minecraft_version") as String
+val fabricLoaderVersion = project.property("fabric_loader_version") as String
+val fabricApiVersion = project.property("fabric_api_version") as String
 
 group = mavenGroup
 version = "$modVersion+$minecraftVersion"
