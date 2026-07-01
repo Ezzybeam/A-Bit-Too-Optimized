@@ -25,6 +25,9 @@ public final class AbtoClient implements ClientModInitializer {
         Path configFile = FabricLoader.getInstance().getConfigDir().resolve("abto.json");
         AbtoConfig config = ConfigStore.load(configFile);
 
+        // Make the saved render toggles live so the render mixins read the right state.
+        com.abto.render.RenderToggles.apply(config.featureToggles);
+
         HardwareInfo detected = HardwareProbe.detect(
             RuntimeHardware::maxMemoryBytes,
             RuntimeHardware::cpuCores,

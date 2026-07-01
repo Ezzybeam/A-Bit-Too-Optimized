@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "OptionsScreenMixin",
-    "VideoSettingsScreenInvoker"
+    "VideoSettingsScreenInvoker",
+    "CloudRendererMixin",
+    "SkyRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
