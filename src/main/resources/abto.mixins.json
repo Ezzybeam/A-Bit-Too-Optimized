@@ -7,7 +7,8 @@
     "OptionsScreenMixin",
     "VideoSettingsScreenInvoker",
     "CloudRendererMixin",
-    "SkyRendererMixin"
+    "SkyRendererMixin",
+    "FogMixin"
   ],
   "injectors": {
     "defaultRequire": 1
