@@ -1,11 +1,27 @@
 package com.abto.config;
 
-public record FeatureToggles(
-    boolean dynamicFps,
-    boolean entityCulling,
-    boolean particleCulling
-) {
+/**
+ * Per-feature on/off flags. A mutable POJO (not a record) so the render-toggle
+ * catalog can grow and Gson fills any field missing from an older config file with
+ * the field initializer below. New visual toggles default OFF so the mod never
+ * changes what the player sees unless they ask.
+ */
+public final class FeatureToggles {
+
+    // Kept from Milestone 2.
+    public boolean dynamicFps = true;
+    public boolean entityCulling = true;
+    public boolean particleCulling = true;
+
+    // Milestone 5 batch 1 (default OFF).
+    public boolean hideClouds = false;
+    public boolean hideStars = false;
+    public boolean hideSunMoon = false;
+    public boolean hideSky = false;
+    public boolean disableFog = false;
+    public boolean disableBlockAnimations = false;
+
     public static FeatureToggles defaults() {
-        return new FeatureToggles(true, true, true);
+        return new FeatureToggles();
     }
 }
