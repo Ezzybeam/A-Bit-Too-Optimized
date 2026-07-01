@@ -2,6 +2,8 @@ package com.abto.render;
 
 import com.abto.config.FeatureToggles;
 
+import java.util.Set;
+
 /**
  * A static, in-memory snapshot of the active render toggles. Render mixins read
  * these getters every frame, so this must be a cheap field read - never a config
@@ -38,6 +40,7 @@ public final class RenderToggles {
     private static volatile boolean disableLavaAnimation;
     private static volatile boolean disableFireAnimation;
     private static volatile boolean disablePortalAnimation;
+    private static volatile Set<String> disabledParticleTypes = Set.of();
 
     private RenderToggles() {
     }
@@ -70,6 +73,8 @@ public final class RenderToggles {
         disableLavaAnimation = t.disableLavaAnimation;
         disableFireAnimation = t.disableFireAnimation;
         disablePortalAnimation = t.disablePortalAnimation;
+        disabledParticleTypes = t.disabledParticleTypes == null
+            ? Set.of() : Set.copyOf(t.disabledParticleTypes);
     }
 
     public static boolean hideClouds() { return hideClouds; }
@@ -99,4 +104,6 @@ public final class RenderToggles {
     public static boolean disableLavaAnimation() { return disableLavaAnimation; }
     public static boolean disableFireAnimation() { return disableFireAnimation; }
     public static boolean disablePortalAnimation() { return disablePortalAnimation; }
+    public static boolean anyParticleTypeDisabled() { return !disabledParticleTypes.isEmpty(); }
+    public static boolean isParticleTypeDisabled(String id) { return disabledParticleTypes.contains(id); }
 }

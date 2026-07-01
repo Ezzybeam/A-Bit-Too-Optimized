@@ -1,5 +1,8 @@
 package com.abto.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Per-feature on/off flags. A mutable POJO (not a record) so the render-toggle
  * catalog can grow and Gson fills any field missing from an older config file with
@@ -41,6 +44,7 @@ public final class FeatureToggles {
     public boolean disableLavaAnimation = false;
     public boolean disableFireAnimation = false;
     public boolean disablePortalAnimation = false;
+    public List<String> disabledParticleTypes = new ArrayList<>();
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();

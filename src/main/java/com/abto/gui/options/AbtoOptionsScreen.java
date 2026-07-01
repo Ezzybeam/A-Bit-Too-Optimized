@@ -60,6 +60,12 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
                     this.list.addSmall(List.<AbstractWidget>of(renderToggle(toggles.get(i))));
                 }
             }
+            if (group.getKey().equals(AbtoOptionRegistry.CAT_PARTICLES)) {
+                this.list.addSmall(List.<AbstractWidget>of(Button.builder(
+                        Component.literal("Per-type particles..."),
+                        b -> this.minecraft.setScreenAndShow(new AbtoParticleTypesScreen(this)))
+                    .bounds(0, 0, ROW_WIDTH, 20).build()));
+            }
         }
 
         this.list.addHeader(Component.literal("Video"));

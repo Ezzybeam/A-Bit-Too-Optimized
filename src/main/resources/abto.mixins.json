@@ -21,7 +21,8 @@
     "EntityNameTagMixin",
     "SignTextMixin",
     "SpriteAnimationMixin",
-    "LevelExtractorMixin"
+    "LevelExtractorMixin",
+    "ParticleTypeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

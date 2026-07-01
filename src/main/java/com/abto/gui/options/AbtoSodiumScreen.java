@@ -100,8 +100,11 @@ public final class AbtoSodiumScreen extends Screen {
         int colWidth = columns == 2 ? (panelWidth - colGap) / 2 : panelWidth;
         int rows = (options.size() + columns - 1) / columns;
 
+        // Add one extra row for the "per-type particles" button on the Particles tab.
+        boolean particlesTab = this.selected.equals(AbtoOptionRegistry.CAT_PARTICLES);
+        int totalRows = rows + (particlesTab ? 1 : 0);
         int band = this.height - TOP - DESC_HEIGHT - FOOTER;
-        List<ButtonColumn.Slot> slots = ButtonColumn.layout(band, rows, 20, 24, 0);
+        List<ButtonColumn.Slot> slots = ButtonColumn.layout(band, totalRows, 20, 24, 0);
         for (int i = 0; i < options.size(); i++) {
             ToggleOption option = options.get(i);
             int col = i % columns;
@@ -119,6 +122,15 @@ public final class AbtoSodiumScreen extends Screen {
                 .on(current);
             this.addRenderableWidget(widget);
             this.described.add(new Described(widget, option.tooltip()));
+        }
+        if (particlesTab) {
+            ButtonColumn.Slot slot = slots.get(totalRows - 1);
+            SodiumWidget button = new SodiumWidget(panelX, TOP + slot.y(), panelWidth,
+                slot.height(), Component.literal("Per-type particles..."),
+                () -> this.minecraft.setScreenAndShow(new AbtoParticleTypesScreen(this)));
+            this.addRenderableWidget(button);
+            this.described.add(new Described(button,
+                "Disable any specific particle type individually."));
         }
     }
 
