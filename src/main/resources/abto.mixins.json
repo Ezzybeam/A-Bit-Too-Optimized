@@ -11,7 +11,15 @@
     "FogMixin",
     "BlockAnimationMixin",
     "WeatherRenderMixin",
-    "ParticleEngineMixin"
+    "ParticleEngineMixin",
+    "ItemFrameRendererMixin",
+    "ArmorStandRendererMixin",
+    "PaintingRendererMixin",
+    "BeaconRendererMixin",
+    "PistonHeadRendererMixin",
+    "EnchantTableRendererMixin",
+    "EntityNameTagMixin",
+    "SignTextMixin"
   ],
   "injectors": {
     "defaultRequire": 1

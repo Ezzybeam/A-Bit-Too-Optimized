@@ -78,6 +78,41 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
             renderToggle("Disable all particles", ft -> ft.disableAllParticles,
                 (ft, v) -> ft.disableAllParticles = v,
                 "Create no particles at all (a hard off beyond the vanilla Minimal setting).")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Disable block particles", ft -> ft.disableBlockParticles,
+                (ft, v) -> ft.disableBlockParticles = v,
+                "Skip block break, mining, and dust particles (kept when 'all particles' is off)."),
+            renderToggle("Disable rain splash particles", ft -> ft.disableRainSplashParticles,
+                (ft, v) -> ft.disableRainSplashParticles = v,
+                "Skip the splash particles rain makes on the ground.")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Hide item frames", ft -> ft.hideItemFrames,
+                (ft, v) -> ft.hideItemFrames = v,
+                "Do not render item frames or the items inside them. Big win in storage rooms."),
+            renderToggle("Hide armor stands", ft -> ft.hideArmorStands,
+                (ft, v) -> ft.hideArmorStands = v,
+                "Do not render armor stands or the gear on them.")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Hide paintings", ft -> ft.hidePaintings,
+                (ft, v) -> ft.hidePaintings = v,
+                "Do not render paintings hung on walls."),
+            renderToggle("Hide beacon beams", ft -> ft.hideBeaconBeams,
+                (ft, v) -> ft.hideBeaconBeams = v,
+                "Do not render the beam of light shot up by beacons.")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Hide moving pistons", ft -> ft.hideMovingPistons,
+                (ft, v) -> ft.hideMovingPistons = v,
+                "Skip the animated render of pistons while they extend or retract."),
+            renderToggle("Hide enchant table book", ft -> ft.hideEnchantTableBook,
+                (ft, v) -> ft.hideEnchantTableBook = v,
+                "Do not render the floating book above enchanting tables.")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Hide name tags", ft -> ft.hideNameTags,
+                (ft, v) -> ft.hideNameTags = v,
+                "Hide the floating names above players, mobs, and named entities."),
+            renderToggle("Hide sign text", ft -> ft.hideSignText,
+                (ft, v) -> ft.hideSignText = v,
+                "Skip rendering the text on signs. The sign board itself stays.")));
 
         this.list.addHeader(Component.literal("Video"));
         List<OptionInstance<?>> vanilla = VanillaVideoRows.collect(this.options);

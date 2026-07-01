@@ -25,6 +25,16 @@ public final class FeatureToggles {
     public boolean disableWeatherRendering = false;
     public boolean disableWeatherParticles = false;
     public boolean disableAllParticles = false;
+    public boolean hideItemFrames = false;
+    public boolean hideArmorStands = false;
+    public boolean hidePaintings = false;
+    public boolean hideBeaconBeams = false;
+    public boolean hideMovingPistons = false;
+    public boolean hideEnchantTableBook = false;
+    public boolean hideNameTags = false;
+    public boolean disableBlockParticles = false;
+    public boolean disableRainSplashParticles = false;
+    public boolean hideSignText = false;
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();

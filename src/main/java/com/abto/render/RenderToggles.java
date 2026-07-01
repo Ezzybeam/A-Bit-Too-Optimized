@@ -20,6 +20,16 @@ public final class RenderToggles {
     private static volatile boolean disableWeatherRendering;
     private static volatile boolean disableWeatherParticles;
     private static volatile boolean disableAllParticles;
+    private static volatile boolean hideItemFrames;
+    private static volatile boolean hideArmorStands;
+    private static volatile boolean hidePaintings;
+    private static volatile boolean hideBeaconBeams;
+    private static volatile boolean hideMovingPistons;
+    private static volatile boolean hideEnchantTableBook;
+    private static volatile boolean hideNameTags;
+    private static volatile boolean disableBlockParticles;
+    private static volatile boolean disableRainSplashParticles;
+    private static volatile boolean hideSignText;
     private static volatile boolean dynamicFps = true;
 
     private RenderToggles() {
@@ -35,6 +45,16 @@ public final class RenderToggles {
         disableWeatherRendering = t.disableWeatherRendering;
         disableWeatherParticles = t.disableWeatherParticles;
         disableAllParticles = t.disableAllParticles;
+        hideItemFrames = t.hideItemFrames;
+        hideArmorStands = t.hideArmorStands;
+        hidePaintings = t.hidePaintings;
+        hideBeaconBeams = t.hideBeaconBeams;
+        hideMovingPistons = t.hideMovingPistons;
+        hideEnchantTableBook = t.hideEnchantTableBook;
+        hideNameTags = t.hideNameTags;
+        disableBlockParticles = t.disableBlockParticles;
+        disableRainSplashParticles = t.disableRainSplashParticles;
+        hideSignText = t.hideSignText;
         dynamicFps = t.dynamicFps;
     }
 
@@ -47,5 +67,15 @@ public final class RenderToggles {
     public static boolean disableWeatherRendering() { return disableWeatherRendering; }
     public static boolean disableWeatherParticles() { return disableWeatherParticles; }
     public static boolean disableAllParticles() { return disableAllParticles; }
+    public static boolean hideItemFrames() { return hideItemFrames; }
+    public static boolean hideArmorStands() { return hideArmorStands; }
+    public static boolean hidePaintings() { return hidePaintings; }
+    public static boolean hideBeaconBeams() { return hideBeaconBeams; }
+    public static boolean hideMovingPistons() { return hideMovingPistons; }
+    public static boolean hideEnchantTableBook() { return hideEnchantTableBook; }
+    public static boolean hideNameTags() { return hideNameTags; }
+    public static boolean disableBlockParticles() { return disableBlockParticles; }
+    public static boolean disableRainSplashParticles() { return disableRainSplashParticles; }
+    public static boolean hideSignText() { return hideSignText; }
     public static boolean dynamicFps() { return dynamicFps; }
 }
