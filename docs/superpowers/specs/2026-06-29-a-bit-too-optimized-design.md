@@ -242,6 +242,45 @@ in one data table so they are easy to read and adjust.
   reduceFog, plus a "max FPS" framerate-limit axis (default unlimited). Each is an
   ABTO-owned toggle implemented by our mixins, independent of other mods.
 
+## Culling settings (Milestone 4 feature toggles)
+
+Two additional Milestone 4 toggles, each defers to a better existing mod when one
+is present (no double work, no conflict):
+
+- Occlusion culling (do-not-render-behind-walls): skip rendering blocks/block
+  entities and entities fully hidden behind solid geometry. Honest scope: Sodium
+  already does chunk occlusion culling, and EntityCulling does entity occlusion;
+  when either is present ABTO disables its own version for that category. ABTO's
+  value is covering this when those mods are absent. Must respect shader shadow
+  passes (do not cull things that should cast shadows under Iris).
+- Behind-camera culling (frustum-based): do not render, and optionally do not keep
+  loaded, content outside the view; load/show on demand when the camera turns to
+  face it. Honest scope: vanilla already frustum-culls RENDERING every frame, so
+  the rendering win is small; the optional not-loading part is opt-in and OFF by
+  default because unloading then reloading as the camera turns can cause stutter
+  and pop-in. Provided as an aggressive option for players who prioritize raw FPS
+  over smoothness, with a clear warning in the config.
+
+Both are individual toggles in FeatureToggles, off-by-default where they risk
+visual artifacts, and never cull cape/overlay/schematic rendering from the COMPAT
+mods (Hypixel+, MinecraftCapes, Litematica).
+
+## Companion mods (separate future projects)
+
+These are separate mods, not part of the main ABTO mod's milestones. Each gets its
+own spec, plan, and milestone cycle if and when we build it.
+
+- Chunk cache (working name): caches a server's chunks to disk so rejoining loads
+  the world fast, and to load singleplayer worlds faster. Stores blocks only, not
+  entities. Load order on a server: first visit caches chunks as the server sends
+  them; later visits load cached chunks immediately, then entities, then the chunks
+  the server newly sends, then cache those new chunks. Honest scope: this overlaps
+  almost exactly with the existing Bobby mod (per-server chunk caching, instant
+  reload, view beyond render distance). Decision deferred: build our own variant
+  only if it offers something Bobby does not; otherwise ABTO simply stays
+  compatible with Bobby (already a goal) and recommends it. The main ABTO mod must
+  not duplicate or fight a chunk cache it detects (Bobby or our own).
+
 ## Release archiving
 
 - Every published build is archived. The build process keeps a versioned copy of
