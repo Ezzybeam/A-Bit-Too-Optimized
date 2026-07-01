@@ -5,7 +5,7 @@
   "name": "A Bit Too Optimized",
   "description": "A performance tune-up mod with quality presets. Client side only.",
   "authors": ["ezzybeam"],
-  "license": "ARR",
+  "license": "LGPL-3.0-or-later",
   "environment": "client",
   "mixins": ["abto.mixins.json"],
   "entrypoints": {

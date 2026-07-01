@@ -346,4 +346,4 @@ own spec, plan, and milestone cycle if and when we build it.
 - Whether to use a config UI library for the detailed-settings list or build it fully
   custom (the wizard and preset picker are custom regardless).
 - Final recommendation-engine thresholds for GPU tiers.
-- Which open-source license to publish under.
+- License: LGPL-3.0-or-later (decided). First public release is 1.0.0 (feature-complete); no early beta.
