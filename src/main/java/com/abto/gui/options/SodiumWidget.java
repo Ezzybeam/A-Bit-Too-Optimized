@@ -87,8 +87,23 @@ public final class SodiumWidget extends AbstractWidget {
         Minecraft mc = Minecraft.getInstance();
         int textColor = this.active ? (hovered ? TEXT : TEXT_DIM) : 0xFF808080;
         int textY = y + (this.height - 8) / 2;
-        int textX = x + (role == Role.TAB ? 8 : 6);
-        g.text(mc.font, getMessage(), textX, textY, textColor);
+        int pad = role == Role.TAB ? 8 : 6;
+        int textX = x + pad;
+        int avail = this.width - pad - 4;
+        g.text(mc.font, fit(mc.font, getMessage().getString(), avail), textX, textY, textColor);
+    }
+
+    /** Truncates text with an ellipsis so it never spills past the widget box. */
+    private static String fit(net.minecraft.client.gui.Font font, String text, int maxWidth) {
+        if (maxWidth <= 0 || font.width(text) <= maxWidth) {
+            return text;
+        }
+        String ellipsis = "...";
+        int ellipsisWidth = font.width(ellipsis);
+        if (maxWidth <= ellipsisWidth) {
+            return "";
+        }
+        return font.plainSubstrByWidth(text, maxWidth - ellipsisWidth) + ellipsis;
     }
 
     @Override

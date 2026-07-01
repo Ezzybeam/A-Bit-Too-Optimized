@@ -33,7 +33,7 @@ public final class AbtoSodiumScreen extends Screen {
     private static final String GENERAL = "General";
 
     private static final int LEFT_X = 16;
-    private static final int TAB_WIDTH = 116;
+    private static final int TAB_WIDTH = 138;
     private static final int PANEL_GAP = 12;
     private static final int TOP = 40;
     private static final int DESC_HEIGHT = 44;
