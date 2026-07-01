@@ -12,7 +12,10 @@
     "BlockAnimationMixin",
     "WeatherRenderMixin",
     "ParticleEngineMixin",
-    "ItemFrameRendererMixin"
+    "ItemFrameRendererMixin",
+    "ArmorStandRendererMixin",
+    "PaintingRendererMixin",
+    "BeaconRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

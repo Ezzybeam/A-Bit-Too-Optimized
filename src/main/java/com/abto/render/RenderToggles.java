@@ -21,6 +21,9 @@ public final class RenderToggles {
     private static volatile boolean disableWeatherParticles;
     private static volatile boolean disableAllParticles;
     private static volatile boolean hideItemFrames;
+    private static volatile boolean hideArmorStands;
+    private static volatile boolean hidePaintings;
+    private static volatile boolean hideBeaconBeams;
     private static volatile boolean dynamicFps = true;
 
     private RenderToggles() {
@@ -37,6 +40,9 @@ public final class RenderToggles {
         disableWeatherParticles = t.disableWeatherParticles;
         disableAllParticles = t.disableAllParticles;
         hideItemFrames = t.hideItemFrames;
+        hideArmorStands = t.hideArmorStands;
+        hidePaintings = t.hidePaintings;
+        hideBeaconBeams = t.hideBeaconBeams;
         dynamicFps = t.dynamicFps;
     }
 
@@ -50,5 +56,8 @@ public final class RenderToggles {
     public static boolean disableWeatherParticles() { return disableWeatherParticles; }
     public static boolean disableAllParticles() { return disableAllParticles; }
     public static boolean hideItemFrames() { return hideItemFrames; }
+    public static boolean hideArmorStands() { return hideArmorStands; }
+    public static boolean hidePaintings() { return hidePaintings; }
+    public static boolean hideBeaconBeams() { return hideBeaconBeams; }
     public static boolean dynamicFps() { return dynamicFps; }
 }

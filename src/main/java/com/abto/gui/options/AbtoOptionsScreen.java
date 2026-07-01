@@ -81,7 +81,17 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
         this.list.addSmall(List.<AbstractWidget>of(
             renderToggle("Hide item frames", ft -> ft.hideItemFrames,
                 (ft, v) -> ft.hideItemFrames = v,
-                "Do not render item frames or the items inside them. Big win in storage rooms.")));
+                "Do not render item frames or the items inside them. Big win in storage rooms."),
+            renderToggle("Hide armor stands", ft -> ft.hideArmorStands,
+                (ft, v) -> ft.hideArmorStands = v,
+                "Do not render armor stands or the gear on them.")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Hide paintings", ft -> ft.hidePaintings,
+                (ft, v) -> ft.hidePaintings = v,
+                "Do not render paintings hung on walls."),
+            renderToggle("Hide beacon beams", ft -> ft.hideBeaconBeams,
+                (ft, v) -> ft.hideBeaconBeams = v,
+                "Do not render the beam of light shot up by beacons.")));
 
         this.list.addHeader(Component.literal("Video"));
         List<OptionInstance<?>> vanilla = VanillaVideoRows.collect(this.options);
