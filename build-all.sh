@@ -12,6 +12,10 @@ DEFAULT="26.1.2"
 
 for v in "${VERSIONS[@]}"; do
     echo "==> Building $v"
+    # Remove any stale jars from a previous build (Gradle leaves differently-named
+    # old-version jars behind after a version bump), so this version's build/libs
+    # ends up holding only the freshly built jar. archive/ still keeps old versions.
+    rm -f "versions/$v/build/libs/"*.jar
     ./gradlew "Set active project to $v"
     ./gradlew build
 done
