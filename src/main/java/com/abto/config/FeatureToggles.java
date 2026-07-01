@@ -45,6 +45,7 @@ public final class FeatureToggles {
     public boolean disableFireAnimation = false;
     public boolean disablePortalAnimation = false;
     public List<String> disabledParticleTypes = new ArrayList<>();
+    public List<String> disabledSprites = new ArrayList<>();
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();

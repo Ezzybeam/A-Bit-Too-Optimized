@@ -100,9 +100,11 @@ public final class AbtoSodiumScreen extends Screen {
         int colWidth = columns == 2 ? (panelWidth - colGap) / 2 : panelWidth;
         int rows = (options.size() + columns - 1) / columns;
 
-        // Add one extra row for the "per-type particles" button on the Particles tab.
+        // Add one extra row for the "per-type" button on the Particles/Animations tabs.
         boolean particlesTab = this.selected.equals(AbtoOptionRegistry.CAT_PARTICLES);
-        int totalRows = rows + (particlesTab ? 1 : 0);
+        boolean animationsTab = this.selected.equals(AbtoOptionRegistry.CAT_ANIM);
+        boolean hasExtra = particlesTab || animationsTab;
+        int totalRows = rows + (hasExtra ? 1 : 0);
         int band = this.height - TOP - DESC_HEIGHT - FOOTER;
         List<ButtonColumn.Slot> slots = ButtonColumn.layout(band, totalRows, 20, 24, 0);
         for (int i = 0; i < options.size(); i++) {
@@ -123,14 +125,19 @@ public final class AbtoSodiumScreen extends Screen {
             this.addRenderableWidget(widget);
             this.described.add(new Described(widget, option.tooltip()));
         }
-        if (particlesTab) {
+        if (hasExtra) {
             ButtonColumn.Slot slot = slots.get(totalRows - 1);
+            String text = particlesTab ? "Per-type particles..." : "Per-type animations...";
+            String desc = particlesTab
+                ? "Disable any specific particle type individually."
+                : "Freeze any specific animated texture individually.";
+            Runnable open = particlesTab
+                ? () -> this.minecraft.setScreenAndShow(new AbtoParticleTypesScreen(this))
+                : () -> this.minecraft.setScreenAndShow(new AbtoAnimationTypesScreen(this));
             SodiumWidget button = new SodiumWidget(panelX, TOP + slot.y(), panelWidth,
-                slot.height(), Component.literal("Per-type particles..."),
-                () -> this.minecraft.setScreenAndShow(new AbtoParticleTypesScreen(this)));
+                slot.height(), Component.literal(text), open);
             this.addRenderableWidget(button);
-            this.described.add(new Described(button,
-                "Disable any specific particle type individually."));
+            this.described.add(new Described(button, desc));
         }
     }
 

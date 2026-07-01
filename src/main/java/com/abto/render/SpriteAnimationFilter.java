@@ -29,30 +29,30 @@ public final class SpriteAnimationFilter {
     }
 
     public static boolean shouldFreeze(Object animationState) {
-        boolean anyType = RenderToggles.disableWaterAnimation()
-            || RenderToggles.disableLavaAnimation()
-            || RenderToggles.disableFireAnimation()
-            || RenderToggles.disablePortalAnimation();
-        if (!anyType) {
+        String id = spriteId(animationState);
+        if (id == null) {
             return false;
         }
-        String path = spritePath(animationState);
-        if (path == null) {
-            return false;
-        }
-        if (RenderToggles.disableWaterAnimation() && path.contains("water")) {
+        // Record every sprite that ticks so the per-type animation list can show it.
+        AnimationCatalog.record(id);
+
+        if (RenderToggles.disableWaterAnimation() && id.contains("water")) {
             return true;
         }
-        if (RenderToggles.disableLavaAnimation() && path.contains("lava")) {
+        if (RenderToggles.disableLavaAnimation() && id.contains("lava")) {
             return true;
         }
-        if (RenderToggles.disableFireAnimation() && path.contains("fire")) {
+        if (RenderToggles.disableFireAnimation() && id.contains("fire")) {
             return true;
         }
-        return RenderToggles.disablePortalAnimation() && path.contains("portal");
+        if (RenderToggles.disablePortalAnimation() && id.contains("portal")) {
+            return true;
+        }
+        return RenderToggles.anySpriteDisabled() && RenderToggles.isSpriteDisabled(id);
     }
 
-    private static String spritePath(Object animationState) {
+    /** The full sprite id, e.g. "minecraft:block/water_still", or null if unreadable. */
+    private static String spriteId(Object animationState) {
         try {
             ensureInit(animationState);
             if (initFailed) {
@@ -64,7 +64,7 @@ public final class SpriteAnimationFilter {
             }
             Object parent = parentField.get(animatedTexture);
             if (parent instanceof SpriteContents sc) {
-                return sc.name().getPath();
+                return sc.name().toString();
             }
         } catch (ReflectiveOperationException e) {
             initFailed = true;
