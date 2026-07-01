@@ -2,8 +2,10 @@ package com.abto.gui.options;
 
 import com.abto.config.AbtoConfig;
 import com.abto.config.ConfigStore;
+import com.abto.config.FeatureToggles;
 import com.abto.gui.AbtoWizardScreen;
 import com.abto.gui.PresetButtonList;
+import com.abto.render.RenderToggles;
 import com.abto.platform.MinecraftOptionsTarget;
 import com.abto.preset.Preset;
 import com.abto.preset.PresetEngine;
@@ -19,6 +21,8 @@ import net.minecraft.network.chat.Component;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 /**
  * The ABTO video settings screen. Extends the vanilla OptionsSubScreen so it gets
@@ -46,9 +50,50 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
         this.list.addSmall(List.<AbstractWidget>of(shadersButton(config), applyModsButton(config)));
         this.list.addSmall(List.<AbstractWidget>of(runSetupButton()));
 
+        this.list.addHeader(Component.literal("Performance (A Bit Too Optimized)"));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Hide clouds", ft -> ft.hideClouds, (ft, v) -> ft.hideClouds = v,
+                "Skip cloud rendering entirely."),
+            renderToggle("Hide stars", ft -> ft.hideStars, (ft, v) -> ft.hideStars = v,
+                "Skip star rendering at night.")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Hide sun & moon", ft -> ft.hideSunMoon, (ft, v) -> ft.hideSunMoon = v,
+                "Skip rendering the sun and moon."),
+            renderToggle("Hide sky", ft -> ft.hideSky, (ft, v) -> ft.hideSky = v,
+                "Skip the sky gradient. Leaves a plain background.")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Disable fog", ft -> ft.disableFog, (ft, v) -> ft.disableFog = v,
+                "Remove all fog (including Nether and water fog)."),
+            renderToggle("Disable block animations", ft -> ft.disableBlockAnimations,
+                (ft, v) -> ft.disableBlockAnimations = v,
+                "Freeze animated textures (water, lava, fire, portal) to save FPS.")));
+
         this.list.addHeader(Component.literal("Video"));
         List<OptionInstance<?>> vanilla = VanillaVideoRows.collect(this.options);
         this.list.addSmall(vanilla.toArray(new OptionInstance<?>[0]));
+    }
+
+    /**
+     * Builds an on/off button for one render toggle. Clicking it loads config, flips
+     * the FeatureToggles field, saves, and refreshes RenderToggles so the change takes
+     * effect live (the render mixins read RenderToggles).
+     */
+    private Button renderToggle(String name, Predicate<FeatureToggles> getter,
+            BiConsumer<FeatureToggles, Boolean> setter, String tip) {
+        boolean current = getter.test(ConfigStore.load(configPath()).featureToggles);
+        return Button.builder(
+                Component.literal(name + ": " + onOff(current)),
+                b -> {
+                    AbtoConfig c = ConfigStore.load(configPath());
+                    boolean next = !getter.test(c.featureToggles);
+                    setter.accept(c.featureToggles, next);
+                    ConfigStore.save(configPath(), c);
+                    RenderToggles.apply(c.featureToggles);
+                    b.setMessage(Component.literal(name + ": " + onOff(next)));
+                })
+            .bounds(0, 0, 150, 20)
+            .tooltip(Tooltip.create(Component.literal(tip)))
+            .build();
     }
 
     // --- ABTO controls (plain buttons; each persists immediately) ---
