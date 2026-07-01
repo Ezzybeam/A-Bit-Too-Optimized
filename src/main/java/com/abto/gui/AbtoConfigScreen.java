@@ -46,29 +46,32 @@ public final class AbtoConfigScreen extends Screen {
 
         List<PresetButtonList.Entry> entries = PresetButtonList.entries();
 
-        // Total height for all buttons: preset buttons + 3 extra (shaders, other mods,
-        // run setup) + 1 done button, with BUTTON_SPACING between each.
+        // Total buttons: preset buttons + shaders + apply-to-mods + run-setup + done.
         int totalButtons = entries.size() + 3 + 1;
-        int totalH = totalButtons * BUTTON_HEIGHT + (totalButtons - 1) * (BUTTON_SPACING - BUTTON_HEIGHT);
-        int startY = (this.height - totalH) / 2;
         int centerX = (this.width - BUTTON_WIDTH) / 2;
-        int y = startY;
+
+        // Use ButtonColumn so the layout never places widgets off-screen at any GUI scale.
+        List<ButtonColumn.Slot> slots = ButtonColumn.layout(
+            this.height, totalButtons, BUTTON_HEIGHT, BUTTON_SPACING, 6);
+
+        int slotIndex = 0;
 
         // One button per preset entry.
         for (PresetButtonList.Entry entry : entries) {
             final Preset preset = entry.preset();
             final String label = entry.label();
             final String desc = entry.description();
+            ButtonColumn.Slot slot = slots.get(slotIndex++);
             addRenderableWidget(
                 Button.builder(
                     Component.literal(label + " - " + desc),
                     btn -> applyPreset(preset)
-                ).bounds(centerX, y, BUTTON_WIDTH, BUTTON_HEIGHT).build()
+                ).bounds(centerX, slot.y(), BUTTON_WIDTH, slot.height()).build()
             );
-            y += BUTTON_SPACING;
         }
 
         // Shader toggle.
+        ButtonColumn.Slot shadersSlot = slots.get(slotIndex++);
         addRenderableWidget(
             Button.builder(
                 shadersLabel(config),
@@ -78,11 +81,11 @@ public final class AbtoConfigScreen extends Screen {
                     ConfigStore.save(configPath(), cfg);
                     btn.setMessage(shadersLabel(cfg));
                 }
-            ).bounds(centerX, y, BUTTON_WIDTH, BUTTON_HEIGHT).build()
+            ).bounds(centerX, shadersSlot.y(), BUTTON_WIDTH, shadersSlot.height()).build()
         );
-        y += BUTTON_SPACING;
 
         // Apply to other mods toggle.
+        ButtonColumn.Slot modsSlot = slots.get(slotIndex++);
         addRenderableWidget(
             Button.builder(
                 applyModsLabel(config),
@@ -92,25 +95,25 @@ public final class AbtoConfigScreen extends Screen {
                     ConfigStore.save(configPath(), cfg);
                     btn.setMessage(applyModsLabel(cfg));
                 }
-            ).bounds(centerX, y, BUTTON_WIDTH, BUTTON_HEIGHT).build()
+            ).bounds(centerX, modsSlot.y(), BUTTON_WIDTH, modsSlot.height()).build()
         );
-        y += BUTTON_SPACING;
 
         // Run setup again.
+        ButtonColumn.Slot setupSlot = slots.get(slotIndex++);
         addRenderableWidget(
             Button.builder(
                 Component.literal("Run setup again"),
                 btn -> this.minecraft.setScreenAndShow(new AbtoWizardScreen(parent))
-            ).bounds(centerX, y, BUTTON_WIDTH, BUTTON_HEIGHT).build()
+            ).bounds(centerX, setupSlot.y(), BUTTON_WIDTH, setupSlot.height()).build()
         );
-        y += BUTTON_SPACING;
 
         // Done button.
+        ButtonColumn.Slot doneSlot = slots.get(slotIndex);
         addRenderableWidget(
             Button.builder(
                 Component.literal("Done"),
                 btn -> onClose()
-            ).bounds(centerX, y, BUTTON_WIDTH, BUTTON_HEIGHT).build()
+            ).bounds(centerX, doneSlot.y(), BUTTON_WIDTH, doneSlot.height()).build()
         );
     }
 

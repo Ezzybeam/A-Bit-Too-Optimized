@@ -155,16 +155,25 @@ public final class AbtoWizardScreen extends Screen {
 
     private void initPreset() {
         int cx = this.width / 2;
-        int y  = 44;
-        for (PresetButtonList.Entry e : PresetButtonList.entries()) {
+        List<PresetButtonList.Entry> entries = PresetButtonList.entries();
+        // Reserve space at the top for the step title (~44px) and at the bottom for
+        // the nav bar (~36px); leave a 6px margin on each end of the button band.
+        int topOffset  = 44;
+        int navHeight  = 36;
+        int bandHeight = Math.max(BTN_H, this.height - topOffset - navHeight);
+        List<ButtonColumn.Slot> slots = ButtonColumn.layout(bandHeight, entries.size(), BTN_H, BTN_H + 4, 6);
+        for (int i = 0; i < entries.size(); i++) {
+            PresetButtonList.Entry e = entries.get(i);
             Preset p = e.preset();
             String suffix = (p == recommended) ? " (recommended)" : "";
             String label  = e.label() + suffix;
+            ButtonColumn.Slot slot = slots.get(i);
+            // Shift slot y into the page by the top offset.
+            int slotY = topOffset + slot.y();
             addRenderableWidget(
                 Button.builder(Component.literal(label), btn -> model.setSelectedPreset(p))
-                    .bounds(cx - BTN_W / 2, y, BTN_W, BTN_H).build()
+                    .bounds(cx - BTN_W / 2, slotY, BTN_W, slot.height()).build()
             );
-            y += BTN_H + 4;
         }
     }
 
