@@ -89,7 +89,7 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
                 })
             .bounds(0, 0, HALF_WIDTH, 20)
             .tooltip(Tooltip.create(Component.literal(
-                "Also tune detected performance mods (Sodium and friends) to match the preset.")))
+                "When supported, also tune detected performance mods (Sodium and friends) to match the preset.")))
             .build();
     }
 

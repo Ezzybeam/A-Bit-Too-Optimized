@@ -165,9 +165,17 @@ The mod is organized into focused units, each with one clear purpose:
    lost, plus ABTO's presets and tweaks. Vanilla options are reused via their
    existing OptionInstance widgets rather than reimplemented, so they stay correct
    and adapt across versions. This redesign introduces the project's first mixin
-   (button redirect) and a small reusable options-screen framework. It is its own
-   milestone (the largest UI effort) and is the home into which the Milestone 4
-   sky/culling toggles later slot as additional rows.
+   (button redirect) and is the home into which later sky/culling toggles slot as
+   additional rows.
+
+   As implemented (Milestone 4): rather than the hand-drawn left-tabs + bottom-panel
+   layout described above, the screen extends vanilla OptionsSubScreen and uses the
+   native scrolling OptionsList with section headers ("A Bit Too Optimized" and
+   "Video"); descriptions show as vanilla hover tooltips. This is Sodium-STYLE
+   (native settings feel, reused controls, presets on top, full parity) and reuses
+   the native list's safe clipping (avoiding the scissor crash a custom scroll layout
+   risked). The exact left-tabs + persistent bottom description panel is deferred as
+   optional polish.
 
 ## First-run setup wizard flow
 
