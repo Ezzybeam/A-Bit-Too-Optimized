@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "TitleScreenProbeMixin",
-    "OptionsScreenMixin"
+    "OptionsScreenMixin",
+    "VideoSettingsScreenInvoker"
   ],
   "injectors": {
     "defaultRequire": 1
