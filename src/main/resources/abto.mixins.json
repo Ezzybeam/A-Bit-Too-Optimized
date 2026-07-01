@@ -22,7 +22,8 @@
     "SignTextMixin",
     "SpriteAnimationMixin",
     "LevelExtractorMixin",
-    "ParticleTypeMixin"
+    "ParticleTypeMixin",
+    "LeavesCullingMixin"
   ],
   "injectors": {
     "defaultRequire": 1

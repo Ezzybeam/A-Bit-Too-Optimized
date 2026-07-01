@@ -34,6 +34,10 @@ public final class AbtoOptionRegistry {
             "Skip drawing entities fully hidden behind solid blocks. No visual change; "
                 + "saves GPU work in walled-off areas like mob farms.",
             ft -> ft.entityCulling, (ft, v) -> ft.entityCulling = v),
+        new ToggleOption(CAT_PERF, "Leaves culling",
+            "Skip the hidden interior faces between leaf blocks. No visible change; "
+                + "a real FPS win in forests. Has no effect when Sodium is installed.",
+            ft -> ft.cullLeaves, (ft, v) -> ft.cullLeaves = v),
 
         // Sky and Fog
         new ToggleOption(CAT_SKY, "Hide clouds", "Skip cloud rendering entirely.",

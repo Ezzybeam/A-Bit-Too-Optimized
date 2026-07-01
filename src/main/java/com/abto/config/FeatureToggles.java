@@ -49,6 +49,7 @@ public final class FeatureToggles {
     public boolean showFps = false;
     public boolean showCoords = false;
     public boolean showFacing = false;
+    public boolean cullLeaves = false;
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();

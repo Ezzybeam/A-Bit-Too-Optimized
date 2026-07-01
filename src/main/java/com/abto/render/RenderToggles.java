@@ -45,6 +45,7 @@ public final class RenderToggles {
     private static volatile boolean showFps;
     private static volatile boolean showCoords;
     private static volatile boolean showFacing;
+    private static volatile boolean cullLeaves;
 
     private RenderToggles() {
     }
@@ -84,6 +85,7 @@ public final class RenderToggles {
         showFps = t.showFps;
         showCoords = t.showCoords;
         showFacing = t.showFacing;
+        cullLeaves = t.cullLeaves;
     }
 
     public static boolean hideClouds() { return hideClouds; }
@@ -120,4 +122,5 @@ public final class RenderToggles {
     public static boolean showFps() { return showFps; }
     public static boolean showCoords() { return showCoords; }
     public static boolean showFacing() { return showFacing; }
+    public static boolean cullLeaves() { return cullLeaves; }
 }
