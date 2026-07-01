@@ -25,7 +25,7 @@ import java.util.List;
  *   - Screen methods: addRenderableWidget(T), protected void init(), onClose()
  *   - Button: Button.builder(Component, OnPress).bounds(x, y, w, h).build()
  *   - Component: Component.literal(String)
- *   - Close to parent: this.minecraft.setScreen(parent)
+ *   - Close to parent: this.minecraft.setScreenAndShow(parent)
  */
 public final class AbtoConfigScreen extends Screen {
 
