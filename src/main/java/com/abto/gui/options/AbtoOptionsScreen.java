@@ -63,7 +63,7 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
                 "Skip the sky gradient. Leaves a plain background.")));
         this.list.addSmall(List.<AbstractWidget>of(
             renderToggle("Disable fog", ft -> ft.disableFog, (ft, v) -> ft.disableFog = v,
-                "Remove all fog (including Nether and water fog)."),
+                "Remove all fog (Nether, water, lava, and blindness/darkness fog too)."),
             renderToggle("Disable block animations", ft -> ft.disableBlockAnimations,
                 (ft, v) -> ft.disableBlockAnimations = v,
                 "Freeze animated textures (water, lava, fire, portal) to save FPS.")));
