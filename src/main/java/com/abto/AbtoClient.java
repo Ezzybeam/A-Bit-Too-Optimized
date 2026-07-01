@@ -51,5 +51,10 @@ public final class AbtoClient implements ClientModInitializer {
         }
 
         com.abto.gui.WizardLauncher.register();
+
+        // Register the optional FPS/coords/facing HUD overlay (draws only when enabled).
+        net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry.addLast(
+            net.minecraft.resources.Identifier.fromNamespaceAndPath("abto", "overlay"),
+            new com.abto.hud.HudOverlay());
     }
 }

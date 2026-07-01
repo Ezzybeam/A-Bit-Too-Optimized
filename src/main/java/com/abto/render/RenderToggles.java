@@ -42,6 +42,9 @@ public final class RenderToggles {
     private static volatile boolean disablePortalAnimation;
     private static volatile Set<String> disabledParticleTypes = Set.of();
     private static volatile Set<String> disabledSprites = Set.of();
+    private static volatile boolean showFps;
+    private static volatile boolean showCoords;
+    private static volatile boolean showFacing;
 
     private RenderToggles() {
     }
@@ -78,6 +81,9 @@ public final class RenderToggles {
             ? Set.of() : Set.copyOf(t.disabledParticleTypes);
         disabledSprites = t.disabledSprites == null
             ? Set.of() : Set.copyOf(t.disabledSprites);
+        showFps = t.showFps;
+        showCoords = t.showCoords;
+        showFacing = t.showFacing;
     }
 
     public static boolean hideClouds() { return hideClouds; }
@@ -111,4 +117,7 @@ public final class RenderToggles {
     public static boolean isParticleTypeDisabled(String id) { return disabledParticleTypes.contains(id); }
     public static boolean anySpriteDisabled() { return !disabledSprites.isEmpty(); }
     public static boolean isSpriteDisabled(String id) { return disabledSprites.contains(id); }
+    public static boolean showFps() { return showFps; }
+    public static boolean showCoords() { return showCoords; }
+    public static boolean showFacing() { return showFacing; }
 }

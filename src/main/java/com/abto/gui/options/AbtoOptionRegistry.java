@@ -26,6 +26,7 @@ public final class AbtoOptionRegistry {
     public static final String CAT_PARTICLES = "Particles";
     public static final String CAT_ENTITIES = "Entities";
     public static final String CAT_BLOCKS = "Blocks";
+    public static final String CAT_HUD = "HUD";
 
     private static final List<ToggleOption> TOGGLES = List.of(
         // Performance (real optimizations that keep visuals intact)
@@ -114,7 +115,18 @@ public final class AbtoOptionRegistry {
             ft -> ft.hideEnchantTableBook, (ft, v) -> ft.hideEnchantTableBook = v),
         new ToggleOption(CAT_BLOCKS, "Hide sign text",
             "Skip rendering the text on signs. The sign board itself stays.",
-            ft -> ft.hideSignText, (ft, v) -> ft.hideSignText = v)
+            ft -> ft.hideSignText, (ft, v) -> ft.hideSignText = v),
+
+        // HUD (an on-screen overlay in the top-left corner)
+        new ToggleOption(CAT_HUD, "Show FPS",
+            "Show the current frames per second in the top-left corner.",
+            ft -> ft.showFps, (ft, v) -> ft.showFps = v),
+        new ToggleOption(CAT_HUD, "Show coordinates",
+            "Show your X/Y/Z position in the top-left corner.",
+            ft -> ft.showCoords, (ft, v) -> ft.showCoords = v),
+        new ToggleOption(CAT_HUD, "Show facing",
+            "Show which direction you are facing in the top-left corner.",
+            ft -> ft.showFacing, (ft, v) -> ft.showFacing = v)
     );
 
     private AbtoOptionRegistry() {

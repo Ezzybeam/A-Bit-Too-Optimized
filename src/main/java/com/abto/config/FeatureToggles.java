@@ -46,6 +46,9 @@ public final class FeatureToggles {
     public boolean disablePortalAnimation = false;
     public List<String> disabledParticleTypes = new ArrayList<>();
     public List<String> disabledSprites = new ArrayList<>();
+    public boolean showFps = false;
+    public boolean showCoords = false;
+    public boolean showFacing = false;
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();
