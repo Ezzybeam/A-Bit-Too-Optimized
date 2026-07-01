@@ -23,8 +23,8 @@ import java.nio.file.Path;
  * minecraft-merged-deobf-26.1.2.jar (Mojang mappings):
  *   net.minecraft.client.gui.screens.TitleScreen
  *
- * Screen open method matches AbtoConfigScreen and AbtoWizardScreen:
- *   client.setScreenAndShow(...)
+ * Screen open method matches the other ABTO screens (AbtoWizardScreen,
+ * AbtoOptionsScreen): client.setScreenAndShow(...)
  * Same API present in 26.2; no Stonecutter version guards required.
  */
 public final class WizardLauncher {
