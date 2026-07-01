@@ -78,6 +78,10 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
             renderToggle("Disable all particles", ft -> ft.disableAllParticles,
                 (ft, v) -> ft.disableAllParticles = v,
                 "Create no particles at all (a hard off beyond the vanilla Minimal setting).")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Hide item frames", ft -> ft.hideItemFrames,
+                (ft, v) -> ft.hideItemFrames = v,
+                "Do not render item frames or the items inside them. Big win in storage rooms.")));
 
         this.list.addHeader(Component.literal("Video"));
         List<OptionInstance<?>> vanilla = VanillaVideoRows.collect(this.options);

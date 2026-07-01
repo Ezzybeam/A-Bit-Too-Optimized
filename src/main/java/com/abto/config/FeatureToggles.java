@@ -25,6 +25,7 @@ public final class FeatureToggles {
     public boolean disableWeatherRendering = false;
     public boolean disableWeatherParticles = false;
     public boolean disableAllParticles = false;
+    public boolean hideItemFrames = false;
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();

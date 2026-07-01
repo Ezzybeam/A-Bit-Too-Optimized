@@ -11,7 +11,8 @@
     "FogMixin",
     "BlockAnimationMixin",
     "WeatherRenderMixin",
-    "ParticleEngineMixin"
+    "ParticleEngineMixin",
+    "ItemFrameRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
