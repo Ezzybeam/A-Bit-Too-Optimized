@@ -46,5 +46,7 @@ public final class AbtoClient implements ClientModInitializer {
                 Abto.LOGGER.info("Applied preset {} to vanilla options: {}.", config.selectedPreset, applied);
             }
         }
+
+        com.abto.gui.WizardLauncher.register();
     }
 }
