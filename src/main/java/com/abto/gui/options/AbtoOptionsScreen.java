@@ -74,6 +74,10 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
             renderToggle("Disable weather particles", ft -> ft.disableWeatherParticles,
                 (ft, v) -> ft.disableWeatherParticles = v,
                 "Skip the rain splash particles on the ground.")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Disable all particles", ft -> ft.disableAllParticles,
+                (ft, v) -> ft.disableAllParticles = v,
+                "Create no particles at all (a hard off beyond the vanilla Minimal setting).")));
 
         this.list.addHeader(Component.literal("Video"));
         List<OptionInstance<?>> vanilla = VanillaVideoRows.collect(this.options);
