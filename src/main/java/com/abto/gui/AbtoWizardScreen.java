@@ -58,15 +58,16 @@ public final class AbtoWizardScreen extends Screen {
     // Y distance from top of EditBox to its label
     private static final int LABEL_ABOVE = 13;
 
-    // Colors (RGB, no alpha prefix needed for these text methods)
-    private static final int COL_WHITE = 0xFFFFFF;
-    private static final int COL_GRAY  = 0xAAAAAA;
+    // Colors (ARGB: top byte is alpha; 0xFF = fully opaque)
+    private static final int COL_WHITE = 0xFFFFFFFF;
+    private static final int COL_GRAY  = 0xFFAAAAAA;
 
     private final Screen parent;
     private final WizardModel model;
     private final HardwareInfo detected;
     private final Preset recommended;
     private final Set<String> presentMods;
+    private final Path configPath;
 
     // HARDWARE step EditBox fields; null on all other steps
     private EditBox allocatedRamBox;
@@ -76,7 +77,8 @@ public final class AbtoWizardScreen extends Screen {
 
     public AbtoWizardScreen(Screen parent) {
         super(Component.literal("A Bit Too Optimized - Setup"));
-        this.parent = parent;
+        this.parent     = parent;
+        this.configPath = FabricLoader.getInstance().getConfigDir().resolve("abto.json");
 
         this.detected = HardwareProbe.detect(
             RuntimeHardware::maxMemoryBytes,
@@ -85,7 +87,7 @@ public final class AbtoWizardScreen extends Screen {
             RuntimeHardware::gpuName
         );
 
-        AbtoConfig cfg = ConfigStore.load(configPath());
+        AbtoConfig cfg = ConfigStore.load(this.configPath);
         HardwareOverrides existingOverrides = cfg.hardwareOverrides != null
             ? cfg.hardwareOverrides : HardwareOverrides.none();
 
@@ -167,27 +169,33 @@ public final class AbtoWizardScreen extends Screen {
     }
 
     private void initShaders() {
-        int cx = this.width / 2;
-        int y  = this.height / 2;
+        int cx       = this.width / 2;
+        int y        = this.height / 2;
+        boolean uses = model.usesShaders();
         addRenderableWidget(
-            Button.builder(Component.literal("Yes"), btn -> model.setUsesShaders(true))
+            Button.builder(Component.literal(uses ? "Yes (selected)" : "Yes"),
+                    btn -> model.setUsesShaders(true))
                 .bounds(cx - BTN_W / 2, y, BTN_W / 2 - 2, BTN_H).build()
         );
         addRenderableWidget(
-            Button.builder(Component.literal("No"), btn -> model.setUsesShaders(false))
+            Button.builder(Component.literal(!uses ? "No (selected)" : "No"),
+                    btn -> model.setUsesShaders(false))
                 .bounds(cx + 2, y, BTN_W / 2 - 2, BTN_H).build()
         );
     }
 
     private void initApplyToMods() {
-        int cx = this.width / 2;
-        int y  = this.height - 55;
+        int cx      = this.width / 2;
+        int y       = this.height - 55;
+        boolean app = model.applyToOtherMods();
         addRenderableWidget(
-            Button.builder(Component.literal("Yes"), btn -> model.setApplyToOtherMods(true))
+            Button.builder(Component.literal(app ? "Yes (selected)" : "Yes"),
+                    btn -> model.setApplyToOtherMods(true))
                 .bounds(cx - BTN_W / 2, y, BTN_W / 2 - 2, BTN_H).build()
         );
         addRenderableWidget(
-            Button.builder(Component.literal("No"), btn -> model.setApplyToOtherMods(false))
+            Button.builder(Component.literal(!app ? "No (selected)" : "No"),
+                    btn -> model.setApplyToOtherMods(false))
                 .bounds(cx + 2, y, BTN_W / 2 - 2, BTN_H).build()
         );
     }
@@ -389,10 +397,9 @@ public final class AbtoWizardScreen extends Screen {
     }
 
     private void finish() {
-        Path path    = configPath();
-        AbtoConfig config = ConfigStore.load(path);
+        AbtoConfig config = ConfigStore.load(this.configPath);
         model.toConfig(config);
-        ConfigStore.save(path, config);
+        ConfigStore.save(this.configPath, config);
         if (config.selectedPreset != Preset.CUSTOM) {
             PresetEngine.apply(config.selectedPreset, config.usesShaders,
                 new MinecraftOptionsTarget(this.minecraft));
@@ -411,9 +418,5 @@ public final class AbtoWizardScreen extends Screen {
 
     private EditBox editBox(int x, int y, String narration) {
         return new EditBox(this.font, x, y, BOX_W, BOX_H, Component.literal(narration));
-    }
-
-    private static Path configPath() {
-        return FabricLoader.getInstance().getConfigDir().resolve("abto.json");
     }
 }
