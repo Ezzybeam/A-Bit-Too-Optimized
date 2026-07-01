@@ -287,6 +287,37 @@ Both are individual toggles in FeatureToggles, off-by-default where they risk
 visual artifacts, and never cull cape/overlay/schematic rendering from the COMPAT
 mods (Hypixel+, MinecraftCapes, Litematica).
 
+## Rendering config catalog (the "control anything" goal)
+
+Goal: the deepest rendering config practical - all of Fabulously Optimized's
+toggles and more. FO's toggles come from many separate mods; ABTO implements them
+as its own mixins so they work without those mods. This is an ongoing catalog built
+in batches on a shared, extensible pattern: each entry is one FeatureToggles field +
+one render mixin (or a vanilla option), surfaced as a row in a "Performance" section
+of the options screen and available as a preset axis. Every entry is individually
+toggleable, off-by-default where it risks a visual artifact, respects Iris shadow
+passes, and never hides COMPAT-mod rendering (capes, Hypixel+ overlays, Litematica
+schematics). Where a better dedicated mod is present (EntityCulling, etc.), the
+matching ABTO entry defers to it.
+
+Catalog (grouped; the milestone builds the highest-FPS batch first, the rest follow):
+- Sky/atmosphere: hideClouds, hideStars, hideSunMoon, hideSky (gradient/void),
+  disableFog (or fog-distance reduction).
+- Particles: allParticlesOff (a hard off beyond vanilla Minimal), plus per-category
+  disables for heavy ones (block-break, splash/rain, etc.).
+- Block/texture animations: disableBlockAnimations (animated textures: water, lava,
+  fire, portal, sea lantern, magma, and similar) - a real FPS win.
+- Weather: disableWeatherRendering (rain/snow), disableWeatherParticles.
+- Entities: entityCulling (off-screen/occluded), disableEntityShadows,
+  disableGlintAnimation (item/armor enchant glint).
+- Render behavior: behindCameraCulling, dynamicFps (lower FPS when unfocused or
+  minimized), maxFps (framerate limit).
+
+Custom preset behavior (fix): selecting a preset applies its bundle; when the user
+then hand-edits any option, the selected preset auto-switches to Custom so the UI
+reflects that current settings no longer match a named preset. Custom itself applies
+nothing (keeps the user's settings).
+
 ## Companion mods (separate future projects)
 
 These are separate mods, not part of the main ABTO mod's milestones. Each gets its
