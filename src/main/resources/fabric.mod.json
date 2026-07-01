@@ -8,7 +8,11 @@
   "license": "ARR",
   "environment": "client",
   "entrypoints": {
-    "client": ["com.abto.AbtoClient"]
+    "client": ["com.abto.AbtoClient"],
+    "modmenu": ["com.abto.platform.ModMenuIntegration"]
+  },
+  "suggests": {
+    "modmenu": "*"
   },
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",

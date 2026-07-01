@@ -9,6 +9,7 @@ val mavenGroup = project.property("maven_group") as String
 val minecraftVersion = project.property("minecraft_version") as String
 val fabricLoaderVersion = project.property("fabric_loader_version") as String
 val fabricApiVersion = project.property("fabric_api_version") as String
+val modmenuVersion = project.property("modmenu_version") as String
 
 group = mavenGroup
 // Jar name pattern: a-bit-too-optimized-<minecraft_version>-<abto_version>.jar
@@ -24,6 +25,7 @@ java {
 
 repositories {
     maven("https://maven.fabricmc.net/")
+    maven("https://maven.terraformersmc.com/releases/")
     mavenCentral()
 }
 
@@ -32,6 +34,7 @@ dependencies {
     // No mappings line: Minecraft 26.1+ is non-obfuscated.
     implementation("net.fabricmc:fabric-loader:$fabricLoaderVersion")
     implementation("net.fabricmc.fabric-api:fabric-api:$fabricApiVersion")
+    implementation("com.terraformersmc:modmenu:$modmenuVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.11.0")
