@@ -93,9 +93,9 @@ public final class AbtoSodiumScreen extends Screen {
         if (options == null) {
             return;
         }
-        // Two columns so a tab with many toggles (Entities has 10) forms half as many
-        // rows and never has to compress to unreadable heights.
-        int columns = options.size() > 5 ? 2 : 1;
+        // Single column keeps labels full-width and readable. Only fall back to two
+        // columns if a category ever grows past what one column can fit.
+        int columns = options.size() > 8 ? 2 : 1;
         int colGap = 6;
         int colWidth = columns == 2 ? (panelWidth - colGap) / 2 : panelWidth;
         int rows = (options.size() + columns - 1) / columns;

@@ -24,7 +24,8 @@ public final class AbtoOptionRegistry {
     public static final String CAT_ANIM = "Animations";
     public static final String CAT_WEATHER = "Weather";
     public static final String CAT_PARTICLES = "Particles";
-    public static final String CAT_ENTITIES = "Entities and Blocks";
+    public static final String CAT_ENTITIES = "Entities";
+    public static final String CAT_BLOCKS = "Blocks";
 
     private static final List<ToggleOption> TOGGLES = List.of(
         // Performance (real optimizations that keep visuals intact)
@@ -82,7 +83,7 @@ public final class AbtoOptionRegistry {
             "Skip the splash particles rain makes on the ground.",
             ft -> ft.disableRainSplashParticles, (ft, v) -> ft.disableRainSplashParticles = v),
 
-        // Entities and Blocks
+        // Entities
         new ToggleOption(CAT_ENTITIES, "Hide item frames",
             "Do not render item frames or the items inside them. Big win in storage rooms.",
             ft -> ft.hideItemFrames, (ft, v) -> ft.hideItemFrames = v),
@@ -91,15 +92,6 @@ public final class AbtoOptionRegistry {
             ft -> ft.hideArmorStands, (ft, v) -> ft.hideArmorStands = v),
         new ToggleOption(CAT_ENTITIES, "Hide paintings", "Do not render paintings hung on walls.",
             ft -> ft.hidePaintings, (ft, v) -> ft.hidePaintings = v),
-        new ToggleOption(CAT_ENTITIES, "Hide beacon beams",
-            "Do not render the beam of light shot up by beacons.",
-            ft -> ft.hideBeaconBeams, (ft, v) -> ft.hideBeaconBeams = v),
-        new ToggleOption(CAT_ENTITIES, "Hide moving pistons",
-            "Skip the animated render of pistons while they extend or retract.",
-            ft -> ft.hideMovingPistons, (ft, v) -> ft.hideMovingPistons = v),
-        new ToggleOption(CAT_ENTITIES, "Hide enchant table book",
-            "Do not render the floating book above enchanting tables.",
-            ft -> ft.hideEnchantTableBook, (ft, v) -> ft.hideEnchantTableBook = v),
         new ToggleOption(CAT_ENTITIES, "Hide name tags",
             "Hide the floating names above players, mobs, and named entities.",
             ft -> ft.hideNameTags, (ft, v) -> ft.hideNameTags = v),
@@ -109,7 +101,18 @@ public final class AbtoOptionRegistry {
         new ToggleOption(CAT_ENTITIES, "Hide mob name tags",
             "Hide names on every non-player entity (mobs, named animals, item frames).",
             ft -> ft.hideMobNames, (ft, v) -> ft.hideMobNames = v),
-        new ToggleOption(CAT_ENTITIES, "Hide sign text",
+
+        // Blocks
+        new ToggleOption(CAT_BLOCKS, "Hide beacon beams",
+            "Do not render the beam of light shot up by beacons.",
+            ft -> ft.hideBeaconBeams, (ft, v) -> ft.hideBeaconBeams = v),
+        new ToggleOption(CAT_BLOCKS, "Hide moving pistons",
+            "Skip the animated render of pistons while they extend or retract.",
+            ft -> ft.hideMovingPistons, (ft, v) -> ft.hideMovingPistons = v),
+        new ToggleOption(CAT_BLOCKS, "Hide enchant table book",
+            "Do not render the floating book above enchanting tables.",
+            ft -> ft.hideEnchantTableBook, (ft, v) -> ft.hideEnchantTableBook = v),
+        new ToggleOption(CAT_BLOCKS, "Hide sign text",
             "Skip rendering the text on signs. The sign board itself stays.",
             ft -> ft.hideSignText, (ft, v) -> ft.hideSignText = v)
     );
