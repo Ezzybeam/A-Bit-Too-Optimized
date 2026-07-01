@@ -7,6 +7,7 @@
   "authors": ["ezzybeam"],
   "license": "ARR",
   "environment": "client",
+  "mixins": ["abto.mixins.json"],
   "entrypoints": {
     "client": ["com.abto.AbtoClient"],
     "modmenu": ["com.abto.platform.ModMenuIntegration"]
