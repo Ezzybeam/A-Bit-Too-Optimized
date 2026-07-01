@@ -40,4 +40,11 @@ class RecommendationEngineTest {
     void neverReturnsCustom() {
         assertNotEquals(Preset.CUSTOM, RecommendationEngine.recommend(hw(512, 1, GpuTier.UNKNOWN)));
     }
+
+    @Test
+    void threeCoreMachineCanReachLowTier() {
+        // 3500 MB -> RAM tier LOW (index 3), 3 cores -> core tier LOW (index 3),
+        // MEDIUM gpu -> no nudge, so the result is LOW.
+        assertEquals(Preset.LOW, RecommendationEngine.recommend(hw(3500, 3, GpuTier.MEDIUM)));
+    }
 }

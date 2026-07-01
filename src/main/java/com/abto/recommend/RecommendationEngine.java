@@ -24,7 +24,7 @@ public final class RecommendationEngine {
     private static final int ULTRA_CORES = 8;
     private static final int HIGH_CORES = 6;
     private static final int NORMAL_CORES = 4;
-    private static final int LOW_CORES = 4;
+    private static final int LOW_CORES = 3;
     private static final int VERY_LOW_CORES = 2;
 
     private RecommendationEngine() {
