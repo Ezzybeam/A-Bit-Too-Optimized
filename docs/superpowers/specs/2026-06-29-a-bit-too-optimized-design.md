@@ -152,8 +152,22 @@ The mod is organized into focused units, each with one clear purpose:
    - Config screen: opened from Mod Menu, with a button to re-run the wizard.
    - Purpose-built screens (preset cards with short descriptions, a clear stepped
      wizard, a tidy settings list and hardware section), not a generic auto-generated
-     list. Built on the game's Screen API, optionally using a config UI library for
-     the detailed-settings list if it speeds development without hurting the look.
+     list. Built on the game's Screen API.
+
+   GUI redesign decision (after Milestone 3): the config UI is rebuilt in a
+   Sodium-style layout - vertical tab pages on the left, option rows (label on the
+   left, control on the right) in the main area, a description panel at the bottom
+   that updates as the user hovers a row, and Done/Apply controls. Short preset
+   names with the description shown on hover, not baked into the button label.
+   Full Sodium parity: ABTO's screen REPLACES the vanilla Video Settings screen
+   (the "Video Settings" button is redirected to it via a mixin, as Reese's Sodium
+   Options does) and contains every vanilla video option as rows, so nothing is
+   lost, plus ABTO's presets and tweaks. Vanilla options are reused via their
+   existing OptionInstance widgets rather than reimplemented, so they stay correct
+   and adapt across versions. This redesign introduces the project's first mixin
+   (button redirect) and a small reusable options-screen framework. It is its own
+   milestone (the largest UI effort) and is the home into which the Milestone 4
+   sky/culling toggles later slot as additional rows.
 
 ## First-run setup wizard flow
 
