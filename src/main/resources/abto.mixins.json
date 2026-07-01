@@ -8,7 +8,8 @@
     "VideoSettingsScreenInvoker",
     "CloudRendererMixin",
     "SkyRendererMixin",
-    "FogMixin"
+    "FogMixin",
+    "BlockAnimationMixin"
   ],
   "injectors": {
     "defaultRequire": 1
