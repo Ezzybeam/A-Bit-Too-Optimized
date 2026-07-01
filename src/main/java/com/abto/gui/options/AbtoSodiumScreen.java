@@ -2,6 +2,7 @@ package com.abto.gui.options;
 
 import com.abto.config.AbtoConfig;
 import com.abto.config.ConfigStore;
+import com.abto.config.UiStyle;
 import com.abto.gui.AbtoWizardScreen;
 import com.abto.gui.ButtonColumn;
 import com.abto.gui.PresetButtonList;
@@ -10,7 +11,6 @@ import com.abto.preset.Preset;
 import com.abto.preset.PresetEngine;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -19,13 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A Sodium-style settings screen: a left column of category tabs, a right panel
- * of the selected category's options, and a persistent description box along the
- * bottom that shows the hovered option's help text. It reads the same
- * {@link AbtoOptionRegistry} as the Minecraft-style screen, so both UIs always
- * show identical settings. Layout uses {@link ButtonColumn} so the columns
- * compress to fit any GUI scale instead of overflowing (which previously caused
- * a scissor crash at scale 4).
+ * A Sodium-style settings screen. Left column of flat category tabs, a right panel
+ * of the selected category's flat option toggles, and a persistent description box
+ * along the bottom that shows the hovered option's help text. Every control is a
+ * {@link SodiumWidget} (flat dark panels, green accent when on, hover highlight) so
+ * the screen looks like Sodium rather than vanilla, while reading the same
+ * {@link AbtoOptionRegistry} as the Minecraft-style screen. Layout uses
+ * {@link ButtonColumn} so columns fit any GUI scale instead of overflowing. Click
+ * handlers act then rebuild, so labels and on/off accents always reflect config.
  */
 public final class AbtoSodiumScreen extends Screen {
 
@@ -42,11 +43,11 @@ public final class AbtoSodiumScreen extends Screen {
     private final List<String> tabs = new ArrayList<>();
     private String selected;
 
-    // Option buttons in the right panel paired with their help text, for the
+    // Option widgets in the right panel paired with their help text, for the
     // hovered-description box.
-    private final List<DescribedButton> described = new ArrayList<>();
+    private final List<Described> described = new ArrayList<>();
 
-    private record DescribedButton(Button button, String description) {
+    private record Described(SodiumWidget widget, String description) {
     }
 
     public AbtoSodiumScreen(Screen parent) {
@@ -61,21 +62,19 @@ public final class AbtoSodiumScreen extends Screen {
     protected void init() {
         this.described.clear();
 
-        // Left column: one tab per category. The active tab is drawn inactive so it
-        // reads as "you are here".
+        // Left column: one flat tab per category, accent bar on the current one.
         List<ButtonColumn.Slot> tabSlots =
             ButtonColumn.layout(this.height - TOP - FOOTER, this.tabs.size(), 20, 24, 0);
         for (int i = 0; i < this.tabs.size(); i++) {
             String tab = this.tabs.get(i);
             ButtonColumn.Slot slot = tabSlots.get(i);
-            Button tabButton = Button.builder(Component.literal(tab), b -> selectTab(tab))
-                .bounds(LEFT_X, TOP + slot.y(), TAB_WIDTH, slot.height())
-                .build();
-            tabButton.active = !tab.equals(this.selected);
-            this.addRenderableWidget(tabButton);
+            this.addRenderableWidget(
+                new SodiumWidget(LEFT_X, TOP + slot.y(), TAB_WIDTH, slot.height(),
+                        Component.literal(tab), () -> selectTab(tab))
+                    .role(SodiumWidget.Role.TAB)
+                    .selected(tab.equals(this.selected)));
         }
 
-        // Right panel: the selected category's controls.
         int panelX = LEFT_X + TAB_WIDTH + PANEL_GAP;
         int panelWidth = this.width - panelX - LEFT_X;
         if (this.selected.equals(GENERAL)) {
@@ -85,10 +84,8 @@ public final class AbtoSodiumScreen extends Screen {
         }
 
         // Footer: Done.
-        this.addRenderableWidget(
-            Button.builder(Component.literal("Done"), b -> this.onClose())
-                .bounds(this.width / 2 - 100, this.height - 26, 200, 20)
-                .build());
+        this.addRenderableWidget(new SodiumWidget(this.width / 2 - 100, this.height - 26, 200, 20,
+            Component.literal("Done"), this::onClose));
     }
 
     private void buildToggles(int panelX, int panelWidth) {
@@ -97,8 +94,7 @@ public final class AbtoSodiumScreen extends Screen {
             return;
         }
         // Two columns so a tab with many toggles (Entities has 10) forms half as many
-        // rows and never has to compress to unreadable heights. Rows are laid out by
-        // ButtonColumn on the row count, so the column still fits any GUI scale.
+        // rows and never has to compress to unreadable heights.
         int columns = options.size() > 5 ? 2 : 1;
         int colGap = 6;
         int colWidth = columns == 2 ? (panelWidth - colGap) / 2 : panelWidth;
@@ -113,97 +109,88 @@ public final class AbtoSodiumScreen extends Screen {
             ButtonColumn.Slot slot = slots.get(row);
             int x = panelX + col * (colWidth + colGap);
             boolean current = AbtoOptionRegistry.current(configPath(), option);
-            Button button = Button.builder(label(option.name(), current), b -> {
-                    boolean next = AbtoOptionRegistry.flip(configPath(), option);
-                    b.setMessage(label(option.name(), next));
-                })
-                .bounds(x, TOP + slot.y(), colWidth, slot.height())
-                .build();
-            this.addRenderableWidget(button);
-            this.described.add(new DescribedButton(button, option.tooltip()));
+            SodiumWidget widget = new SodiumWidget(x, TOP + slot.y(), colWidth, slot.height(),
+                    label(option.name(), current),
+                    () -> {
+                        AbtoOptionRegistry.flip(configPath(), option);
+                        this.rebuildWidgets();
+                    })
+                .role(SodiumWidget.Role.TOGGLE)
+                .on(current);
+            this.addRenderableWidget(widget);
+            this.described.add(new Described(widget, option.tooltip()));
         }
     }
 
     private void buildGeneral(int panelX, int panelWidth) {
         int band = this.height - TOP - DESC_HEIGHT - FOOTER;
-        // Five general controls in a single full-width column.
         List<ButtonColumn.Slot> slots = ButtonColumn.layout(band, 5, 20, 24, 0);
-
         AbtoConfig config = ConfigStore.load(configPath());
 
         PresetButtonList.Entry entry = entryFor(config.selectedPreset);
-        Button preset = Button.builder(
-                Component.literal("Preset: " + entry.label()), b -> cyclePreset())
-            .bounds(panelX, TOP + slots.get(0).y(), panelWidth, slots.get(0).height())
-            .build();
-        this.addRenderableWidget(preset);
-        this.described.add(new DescribedButton(preset, entry.description()));
+        addGeneral(panelX, panelWidth, slots.get(0), SodiumWidget.Role.PLAIN, false,
+            Component.literal("Preset: " + entry.label()), entry.description(), this::cyclePreset);
 
-        Button uiStyle = Button.builder(
-                Component.literal("UI style: " + config.uiStyle.label()), b -> cycleUiStyle())
-            .bounds(panelX, TOP + slots.get(1).y(), panelWidth, slots.get(1).height())
-            .build();
-        this.addRenderableWidget(uiStyle);
-        this.described.add(new DescribedButton(uiStyle,
-            "Switch between the Sodium-style and Minecraft-style settings screens."));
+        addGeneral(panelX, panelWidth, slots.get(1), SodiumWidget.Role.PLAIN, false,
+            Component.literal("UI style: " + config.uiStyle.label()),
+            "Switch between the Sodium-style and Minecraft-style settings screens.",
+            this::cycleUiStyle);
 
-        Button shaders = Button.builder(
-                Component.literal("Use shaders: " + onOff(config.usesShaders)),
-                b -> {
-                    AbtoConfig c = ConfigStore.load(configPath());
-                    c.usesShaders = !c.usesShaders;
-                    ConfigStore.save(configPath(), c);
-                    b.setMessage(Component.literal("Use shaders: " + onOff(c.usesShaders)));
-                })
-            .bounds(panelX, TOP + slots.get(2).y(), panelWidth, slots.get(2).height())
-            .build();
-        this.addRenderableWidget(shaders);
-        this.described.add(new DescribedButton(shaders,
-            "Keep shader-friendly settings when a preset is applied (for Iris)."));
+        addGeneral(panelX, panelWidth, slots.get(2), SodiumWidget.Role.TOGGLE, config.usesShaders,
+            Component.literal("Use shaders: " + onOff(config.usesShaders)),
+            "Keep shader-friendly settings when a preset is applied (for Iris).",
+            () -> {
+                AbtoConfig c = ConfigStore.load(configPath());
+                c.usesShaders = !c.usesShaders;
+                ConfigStore.save(configPath(), c);
+                this.rebuildWidgets();
+            });
 
-        Button applyMods = Button.builder(
-                Component.literal("Apply to other mods: " + onOff(config.applyToOtherMods)),
-                b -> {
-                    AbtoConfig c = ConfigStore.load(configPath());
-                    c.applyToOtherMods = !c.applyToOtherMods;
-                    ConfigStore.save(configPath(), c);
-                    b.setMessage(Component.literal(
-                        "Apply to other mods: " + onOff(c.applyToOtherMods)));
-                })
-            .bounds(panelX, TOP + slots.get(3).y(), panelWidth, slots.get(3).height())
-            .build();
-        this.addRenderableWidget(applyMods);
-        this.described.add(new DescribedButton(applyMods,
-            "When supported, also tune detected performance mods to match the preset."));
+        addGeneral(panelX, panelWidth, slots.get(3), SodiumWidget.Role.TOGGLE,
+            config.applyToOtherMods,
+            Component.literal("Apply to other mods: " + onOff(config.applyToOtherMods)),
+            "When supported, also tune detected performance mods to match the preset.",
+            () -> {
+                AbtoConfig c = ConfigStore.load(configPath());
+                c.applyToOtherMods = !c.applyToOtherMods;
+                ConfigStore.save(configPath(), c);
+                this.rebuildWidgets();
+            });
 
-        Button runSetup = Button.builder(
-                Component.literal("Run setup again"),
-                b -> this.minecraft.setScreenAndShow(new AbtoWizardScreen(this)))
-            .bounds(panelX, TOP + slots.get(4).y(), panelWidth, slots.get(4).height())
-            .build();
-        this.addRenderableWidget(runSetup);
-        this.described.add(new DescribedButton(runSetup, "Re-run the first-run setup wizard."));
+        addGeneral(panelX, panelWidth, slots.get(4), SodiumWidget.Role.PLAIN, false,
+            Component.literal("Run setup again"), "Re-run the first-run setup wizard.",
+            () -> this.minecraft.setScreenAndShow(new AbtoWizardScreen(this)));
+    }
+
+    private void addGeneral(int panelX, int panelWidth, ButtonColumn.Slot slot,
+            SodiumWidget.Role role, boolean on, Component label, String description,
+            Runnable onPress) {
+        SodiumWidget widget = new SodiumWidget(panelX, TOP + slot.y(), panelWidth, slot.height(),
+                label, onPress)
+            .role(role)
+            .on(on);
+        this.addRenderableWidget(widget);
+        this.described.add(new Described(widget, description));
     }
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float delta) {
-        // Draws the background and all widgets (tabs, option buttons, Done).
+        // Draws the background and all widgets (tabs, option toggles, Done).
         super.extractRenderState(g, mouseX, mouseY, delta);
 
-        // Title.
         g.centeredText(this.font, this.title, this.width / 2, 14, 0xFFFFFFFF);
 
         int panelX = LEFT_X + TAB_WIDTH + PANEL_GAP;
         int panelRight = this.width - LEFT_X;
 
-        // Divider between the tab column and the option panel. Drawn in the empty gap
-        // so it never paints over a widget (draw order here is on top of widgets).
+        // Divider between the tab column and the option panel (in the empty gap).
         g.verticalLine(panelX - PANEL_GAP / 2, TOP - 2, this.height - FOOTER, 0x40FFFFFF);
 
-        // Description box: an empty strip between the options and the footer, so filling
-        // it after the widgets does not cover any button.
+        // Description box: an empty strip above the footer, so filling it after the
+        // widgets never covers a control.
         int descTop = this.height - DESC_HEIGHT - FOOTER + 4;
         g.fill(panelX - 2, descTop, panelRight, descTop + DESC_HEIGHT - 6, 0x70000000);
+        g.outline(panelX - 2, descTop, panelRight - (panelX - 2), DESC_HEIGHT - 6, 0x33FFFFFF);
         String desc = hoveredDescription(mouseX, mouseY);
         if (desc != null) {
             g.textWithWordWrap(this.font, Component.literal(desc),
@@ -212,8 +199,8 @@ public final class AbtoSodiumScreen extends Screen {
     }
 
     private String hoveredDescription(int mouseX, int mouseY) {
-        for (DescribedButton d : this.described) {
-            if (d.button().isMouseOver(mouseX, mouseY)) {
+        for (Described d : this.described) {
+            if (d.widget().isMouseOver(mouseX, mouseY)) {
                 return d.description();
             }
         }
@@ -229,8 +216,7 @@ public final class AbtoSodiumScreen extends Screen {
         AbtoConfig config = ConfigStore.load(configPath());
         config.uiStyle = config.uiStyle.next();
         ConfigStore.save(configPath(), config);
-        // If switched away from Sodium, hand off to the Minecraft-style screen live.
-        if (config.uiStyle != com.abto.config.UiStyle.SODIUM) {
+        if (config.uiStyle != UiStyle.SODIUM) {
             this.minecraft.setScreenAndShow(new AbtoOptionsScreen(this.parent));
         } else {
             this.rebuildWidgets();
