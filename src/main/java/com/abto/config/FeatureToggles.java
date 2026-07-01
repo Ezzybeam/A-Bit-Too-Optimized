@@ -21,6 +21,10 @@ public final class FeatureToggles {
     public boolean disableFog = false;
     public boolean disableBlockAnimations = false;
 
+    // Milestone 6 batch 2 - weather (default OFF).
+    public boolean disableWeatherRendering = false;
+    public boolean disableWeatherParticles = false;
+
     public static FeatureToggles defaults() {
         return new FeatureToggles();
     }

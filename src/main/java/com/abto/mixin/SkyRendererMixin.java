@@ -1,5 +1,6 @@
 package com.abto.mixin;
 
+import com.abto.platform.ShaderCompat;
 import com.abto.render.RenderToggles;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SkyRenderer;
@@ -12,35 +13,35 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /**
  * Skips individual sky elements when their toggle is on: the sky disc/gradient,
  * the stars, and the sun and moon. Each is a HEAD cancel so the element (and its
- * per-frame draw) is simply not rendered.
+ * per-frame draw) is simply not rendered. All defer to an active shader pack.
  */
 @Mixin(SkyRenderer.class)
 public class SkyRendererMixin {
 
     @Inject(method = "renderSkyDisc", at = @At("HEAD"), cancellable = true)
     private void abto$maybeSkipSky(int color, CallbackInfo ci) {
-        if (RenderToggles.hideSky()) {
+        if (RenderToggles.hideSky() && !ShaderCompat.shaderPackActive()) {
             ci.cancel();
         }
     }
 
     @Inject(method = "renderStars", at = @At("HEAD"), cancellable = true)
     private void abto$maybeSkipStars(float alpha, PoseStack pose, CallbackInfo ci) {
-        if (RenderToggles.hideStars()) {
+        if (RenderToggles.hideStars() && !ShaderCompat.shaderPackActive()) {
             ci.cancel();
         }
     }
 
     @Inject(method = "renderSun", at = @At("HEAD"), cancellable = true)
     private void abto$maybeSkipSun(float alpha, PoseStack pose, CallbackInfo ci) {
-        if (RenderToggles.hideSunMoon()) {
+        if (RenderToggles.hideSunMoon() && !ShaderCompat.shaderPackActive()) {
             ci.cancel();
         }
     }
 
     @Inject(method = "renderMoon", at = @At("HEAD"), cancellable = true)
     private void abto$maybeSkipMoon(MoonPhase phase, float alpha, PoseStack pose, CallbackInfo ci) {
-        if (RenderToggles.hideSunMoon()) {
+        if (RenderToggles.hideSunMoon() && !ShaderCompat.shaderPackActive()) {
             ci.cancel();
         }
     }

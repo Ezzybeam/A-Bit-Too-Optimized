@@ -9,7 +9,8 @@
     "CloudRendererMixin",
     "SkyRendererMixin",
     "FogMixin",
-    "BlockAnimationMixin"
+    "BlockAnimationMixin",
+    "WeatherRenderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

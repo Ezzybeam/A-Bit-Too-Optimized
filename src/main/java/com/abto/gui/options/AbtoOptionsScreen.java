@@ -67,6 +67,13 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
             renderToggle("Disable block animations", ft -> ft.disableBlockAnimations,
                 (ft, v) -> ft.disableBlockAnimations = v,
                 "Freeze animated textures (water, lava, fire, portal) to save FPS.")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Disable weather", ft -> ft.disableWeatherRendering,
+                (ft, v) -> ft.disableWeatherRendering = v,
+                "Do not render rain or snow. A solid FPS win in storms."),
+            renderToggle("Disable weather particles", ft -> ft.disableWeatherParticles,
+                (ft, v) -> ft.disableWeatherParticles = v,
+                "Skip the rain splash particles on the ground.")));
 
         this.list.addHeader(Component.literal("Video"));
         List<OptionInstance<?>> vanilla = VanillaVideoRows.collect(this.options);

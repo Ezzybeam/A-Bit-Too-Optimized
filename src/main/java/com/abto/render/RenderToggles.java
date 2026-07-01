@@ -17,6 +17,8 @@ public final class RenderToggles {
     private static volatile boolean hideSky;
     private static volatile boolean disableFog;
     private static volatile boolean disableBlockAnimations;
+    private static volatile boolean disableWeatherRendering;
+    private static volatile boolean disableWeatherParticles;
     private static volatile boolean dynamicFps = true;
 
     private RenderToggles() {
@@ -29,6 +31,8 @@ public final class RenderToggles {
         hideSky = t.hideSky;
         disableFog = t.disableFog;
         disableBlockAnimations = t.disableBlockAnimations;
+        disableWeatherRendering = t.disableWeatherRendering;
+        disableWeatherParticles = t.disableWeatherParticles;
         dynamicFps = t.dynamicFps;
     }
 
@@ -38,5 +42,7 @@ public final class RenderToggles {
     public static boolean hideSky() { return hideSky; }
     public static boolean disableFog() { return disableFog; }
     public static boolean disableBlockAnimations() { return disableBlockAnimations; }
+    public static boolean disableWeatherRendering() { return disableWeatherRendering; }
+    public static boolean disableWeatherParticles() { return disableWeatherParticles; }
     public static boolean dynamicFps() { return dynamicFps; }
 }
