@@ -20,10 +20,11 @@
     "EnchantTableRendererMixin",
     "EntityNameTagMixin",
     "SignTextMixin",
-    "EntityRenderDispatcherMixin",
-    "SpriteAnimationMixin"
+    "SpriteAnimationMixin",
+    "LevelExtractorMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "com.abto.mixin.AbtoMixinPlugin"
 }

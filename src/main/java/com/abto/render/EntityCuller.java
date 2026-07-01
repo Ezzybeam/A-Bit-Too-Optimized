@@ -28,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
  */
 public final class EntityCuller {
 
-    private static final double MIN_DISTANCE_SQR = 8.0 * 8.0;
+    private static final double MIN_DISTANCE_SQR = 4.0 * 4.0;
     private static final double INSET = 0.1;
 
     private EntityCuller() {
