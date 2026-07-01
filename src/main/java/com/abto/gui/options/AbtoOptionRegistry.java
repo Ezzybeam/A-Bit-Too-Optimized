@@ -21,7 +21,8 @@ public final class AbtoOptionRegistry {
 
     public static final String CAT_PERF = "Performance";
     public static final String CAT_SKY = "Sky and Fog";
-    public static final String CAT_ANIM = "Animations and Weather";
+    public static final String CAT_ANIM = "Animations";
+    public static final String CAT_WEATHER = "Weather";
     public static final String CAT_PARTICLES = "Particles";
     public static final String CAT_ENTITIES = "Entities and Blocks";
 
@@ -45,13 +46,10 @@ public final class AbtoOptionRegistry {
             "Remove all fog (Nether, water, lava, and blindness/darkness fog too).",
             ft -> ft.disableFog, (ft, v) -> ft.disableFog = v),
 
-        // Animations and Weather
+        // Animations
         new ToggleOption(CAT_ANIM, "Disable block animations",
             "Freeze animated textures (water, lava, fire, portal) to save FPS.",
             ft -> ft.disableBlockAnimations, (ft, v) -> ft.disableBlockAnimations = v),
-        new ToggleOption(CAT_ANIM, "Disable weather",
-            "Do not render rain or snow. A solid FPS win in storms.",
-            ft -> ft.disableWeatherRendering, (ft, v) -> ft.disableWeatherRendering = v),
         new ToggleOption(CAT_ANIM, "Freeze water animation",
             "Stop animating water textures (only when 'disable block animations' is off).",
             ft -> ft.disableWaterAnimation, (ft, v) -> ft.disableWaterAnimation = v),
@@ -65,6 +63,14 @@ public final class AbtoOptionRegistry {
             "Stop animating the nether portal texture.",
             ft -> ft.disablePortalAnimation, (ft, v) -> ft.disablePortalAnimation = v),
 
+        // Weather
+        new ToggleOption(CAT_WEATHER, "Disable weather",
+            "Do not render rain or snow. A solid FPS win in storms.",
+            ft -> ft.disableWeatherRendering, (ft, v) -> ft.disableWeatherRendering = v),
+        new ToggleOption(CAT_WEATHER, "Disable weather particles",
+            "Skip the rain splash particles spawned by weather.",
+            ft -> ft.disableWeatherParticles, (ft, v) -> ft.disableWeatherParticles = v),
+
         // Particles
         new ToggleOption(CAT_PARTICLES, "Disable all particles",
             "Create no particles at all (a hard off beyond the vanilla Minimal setting).",
@@ -75,9 +81,6 @@ public final class AbtoOptionRegistry {
         new ToggleOption(CAT_PARTICLES, "Disable rain splash particles",
             "Skip the splash particles rain makes on the ground.",
             ft -> ft.disableRainSplashParticles, (ft, v) -> ft.disableRainSplashParticles = v),
-        new ToggleOption(CAT_PARTICLES, "Disable weather particles",
-            "Skip the rain splash particles spawned by weather.",
-            ft -> ft.disableWeatherParticles, (ft, v) -> ft.disableWeatherParticles = v),
 
         // Entities and Blocks
         new ToggleOption(CAT_ENTITIES, "Hide item frames",
