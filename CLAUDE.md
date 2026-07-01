@@ -42,6 +42,14 @@ characters in such generated files.
 - Dev client: `./gradlew runClient`
 - Unit tests: `./gradlew test`
 
+## Versioning
+
+- `mod_version` in gradle.properties is the mod's own version, separate from the
+  Minecraft version. Jars are named `a-bit-too-optimized-<minecraft_version>-<mod_version>.jar`.
+- Bump the minor version each completed milestone: M1=0.1.0, M2=0.2.0, M3=0.3.0,
+  M4=0.4.0, and so on. The first real public release is 1.0.0. Do the bump as part
+  of finishing each milestone, before the final build.
+
 ## Git
 
 - Work happens on milestone branches (for example `milestone-01-foundation`).
