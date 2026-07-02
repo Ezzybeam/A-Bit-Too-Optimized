@@ -31,6 +31,7 @@ public final class FeatureToggles {
     public boolean hideBeaconBeams = false;
     public boolean hideMovingPistons = false;
     public boolean hideEnchantTableBook = false;
+    public boolean hideNameTags = false;
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();

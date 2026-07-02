@@ -26,6 +26,7 @@ public final class RenderToggles {
     private static volatile boolean hideBeaconBeams;
     private static volatile boolean hideMovingPistons;
     private static volatile boolean hideEnchantTableBook;
+    private static volatile boolean hideNameTags;
     private static volatile boolean dynamicFps = true;
 
     private RenderToggles() {
@@ -47,6 +48,7 @@ public final class RenderToggles {
         hideBeaconBeams = t.hideBeaconBeams;
         hideMovingPistons = t.hideMovingPistons;
         hideEnchantTableBook = t.hideEnchantTableBook;
+        hideNameTags = t.hideNameTags;
         dynamicFps = t.dynamicFps;
     }
 
@@ -65,5 +67,6 @@ public final class RenderToggles {
     public static boolean hideBeaconBeams() { return hideBeaconBeams; }
     public static boolean hideMovingPistons() { return hideMovingPistons; }
     public static boolean hideEnchantTableBook() { return hideEnchantTableBook; }
+    public static boolean hideNameTags() { return hideNameTags; }
     public static boolean dynamicFps() { return dynamicFps; }
 }

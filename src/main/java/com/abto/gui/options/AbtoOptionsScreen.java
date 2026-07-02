@@ -99,6 +99,10 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
             renderToggle("Hide enchant table book", ft -> ft.hideEnchantTableBook,
                 (ft, v) -> ft.hideEnchantTableBook = v,
                 "Do not render the floating book above enchanting tables.")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Hide name tags", ft -> ft.hideNameTags,
+                (ft, v) -> ft.hideNameTags = v,
+                "Hide the floating names above players, mobs, and named entities.")));
 
         this.list.addHeader(Component.literal("Video"));
         List<OptionInstance<?>> vanilla = VanillaVideoRows.collect(this.options);
