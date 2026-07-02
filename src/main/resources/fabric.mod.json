@@ -3,9 +3,15 @@
   "id": "${mod_id}",
   "version": "${mod_version}",
   "name": "A Bit Too Optimized",
-  "description": "A performance tune-up mod with quality presets. Client side only.",
+  "description": "A client-side performance mod that boosts FPS out of the box with entity and leaves culling, adds the deepest render config around (disable any particle or animation type, hide entities and blocks, HUD overlay, and more), and stacks cleanly with Sodium.",
   "authors": ["ezzybeam"],
+  "contact": {
+    "homepage": "https://github.com/Ezzybeam/ABitTooOptimized",
+    "sources": "https://github.com/Ezzybeam/ABitTooOptimized",
+    "issues": "https://github.com/Ezzybeam/ABitTooOptimized/issues"
+  },
   "license": "LGPL-3.0-or-later",
+  "icon": "assets/abto/icon.png",
   "environment": "client",
   "mixins": ["abto.mixins.json"],
   "entrypoints": {
