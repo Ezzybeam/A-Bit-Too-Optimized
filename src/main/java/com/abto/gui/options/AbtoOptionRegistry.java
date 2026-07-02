@@ -19,12 +19,19 @@ import java.util.Map;
  */
 public final class AbtoOptionRegistry {
 
+    public static final String CAT_PERF = "Performance";
     public static final String CAT_SKY = "Sky and Fog";
     public static final String CAT_ANIM = "Animations and Weather";
     public static final String CAT_PARTICLES = "Particles";
     public static final String CAT_ENTITIES = "Entities and Blocks";
 
     private static final List<ToggleOption> TOGGLES = List.of(
+        // Performance (real optimizations that keep visuals intact)
+        new ToggleOption(CAT_PERF, "Entity culling",
+            "Skip drawing entities fully hidden behind solid blocks. No visual change; "
+                + "saves GPU work in walled-off areas like mob farms.",
+            ft -> ft.entityCulling, (ft, v) -> ft.entityCulling = v),
+
         // Sky and Fog
         new ToggleOption(CAT_SKY, "Hide clouds", "Skip cloud rendering entirely.",
             ft -> ft.hideClouds, (ft, v) -> ft.hideClouds = v),

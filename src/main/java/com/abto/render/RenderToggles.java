@@ -31,6 +31,7 @@ public final class RenderToggles {
     private static volatile boolean disableRainSplashParticles;
     private static volatile boolean hideSignText;
     private static volatile boolean dynamicFps = true;
+    private static volatile boolean entityCulling = true;
 
     private RenderToggles() {
     }
@@ -56,6 +57,7 @@ public final class RenderToggles {
         disableRainSplashParticles = t.disableRainSplashParticles;
         hideSignText = t.hideSignText;
         dynamicFps = t.dynamicFps;
+        entityCulling = t.entityCulling;
     }
 
     public static boolean hideClouds() { return hideClouds; }
@@ -78,4 +80,5 @@ public final class RenderToggles {
     public static boolean disableRainSplashParticles() { return disableRainSplashParticles; }
     public static boolean hideSignText() { return hideSignText; }
     public static boolean dynamicFps() { return dynamicFps; }
+    public static boolean entityCulling() { return entityCulling; }
 }

@@ -19,7 +19,8 @@
     "PistonHeadRendererMixin",
     "EnchantTableRendererMixin",
     "EntityNameTagMixin",
-    "SignTextMixin"
+    "SignTextMixin",
+    "EntityRenderDispatcherMixin"
   ],
   "injectors": {
     "defaultRequire": 1
