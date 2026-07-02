@@ -16,6 +16,7 @@ public final class AbtoConfig {
     public boolean wizardCompleted = false;
     public boolean usesShaders = false;
     public boolean applyToOtherMods = true;
+    public UiStyle uiStyle = UiStyle.SODIUM;
     public PresetSettings customSettings = null;
     public HardwareOverrides hardwareOverrides = HardwareOverrides.none();
     public FeatureToggles featureToggles = FeatureToggles.defaults();
@@ -29,6 +30,7 @@ public final class AbtoConfig {
         if (selectedPreset == null) selectedPreset = Preset.NORMAL;
         if (hardwareOverrides == null) hardwareOverrides = HardwareOverrides.none();
         if (featureToggles == null) featureToggles = FeatureToggles.defaults();
+        if (uiStyle == null) uiStyle = UiStyle.SODIUM;
         if (configVersion <= 0) configVersion = CURRENT_VERSION;
     }
 }

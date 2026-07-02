@@ -2,10 +2,8 @@ package com.abto.gui.options;
 
 import com.abto.config.AbtoConfig;
 import com.abto.config.ConfigStore;
-import com.abto.config.FeatureToggles;
 import com.abto.gui.AbtoWizardScreen;
 import com.abto.gui.PresetButtonList;
-import com.abto.render.RenderToggles;
 import com.abto.platform.MinecraftOptionsTarget;
 import com.abto.preset.Preset;
 import com.abto.preset.PresetEngine;
@@ -21,8 +19,7 @@ import net.minecraft.network.chat.Component;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
+import java.util.Map;
 
 /**
  * The ABTO video settings screen. Extends the vanilla OptionsSubScreen so it gets
@@ -48,71 +45,22 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
         this.list.addHeader(Component.literal("A Bit Too Optimized"));
         this.list.addSmall(List.<AbstractWidget>of(presetButton(config)));
         this.list.addSmall(List.<AbstractWidget>of(shadersButton(config), applyModsButton(config)));
-        this.list.addSmall(List.<AbstractWidget>of(runSetupButton()));
+        this.list.addSmall(List.<AbstractWidget>of(uiStyleButton(config), runSetupButton()));
 
-        this.list.addHeader(Component.literal("Performance (A Bit Too Optimized)"));
-        this.list.addSmall(List.<AbstractWidget>of(
-            renderToggle("Hide clouds", ft -> ft.hideClouds, (ft, v) -> ft.hideClouds = v,
-                "Skip cloud rendering entirely."),
-            renderToggle("Hide stars", ft -> ft.hideStars, (ft, v) -> ft.hideStars = v,
-                "Skip star rendering at night.")));
-        this.list.addSmall(List.<AbstractWidget>of(
-            renderToggle("Hide sun & moon", ft -> ft.hideSunMoon, (ft, v) -> ft.hideSunMoon = v,
-                "Skip rendering the sun and moon."),
-            renderToggle("Hide sky", ft -> ft.hideSky, (ft, v) -> ft.hideSky = v,
-                "Skip the sky gradient. Leaves a plain background.")));
-        this.list.addSmall(List.<AbstractWidget>of(
-            renderToggle("Disable fog", ft -> ft.disableFog, (ft, v) -> ft.disableFog = v,
-                "Remove all fog (Nether, water, lava, and blindness/darkness fog too)."),
-            renderToggle("Disable block animations", ft -> ft.disableBlockAnimations,
-                (ft, v) -> ft.disableBlockAnimations = v,
-                "Freeze animated textures (water, lava, fire, portal) to save FPS.")));
-        this.list.addSmall(List.<AbstractWidget>of(
-            renderToggle("Disable weather", ft -> ft.disableWeatherRendering,
-                (ft, v) -> ft.disableWeatherRendering = v,
-                "Do not render rain or snow. A solid FPS win in storms."),
-            renderToggle("Disable weather particles", ft -> ft.disableWeatherParticles,
-                (ft, v) -> ft.disableWeatherParticles = v,
-                "Skip the rain splash particles on the ground.")));
-        this.list.addSmall(List.<AbstractWidget>of(
-            renderToggle("Disable all particles", ft -> ft.disableAllParticles,
-                (ft, v) -> ft.disableAllParticles = v,
-                "Create no particles at all (a hard off beyond the vanilla Minimal setting).")));
-        this.list.addSmall(List.<AbstractWidget>of(
-            renderToggle("Disable block particles", ft -> ft.disableBlockParticles,
-                (ft, v) -> ft.disableBlockParticles = v,
-                "Skip block break, mining, and dust particles (kept when 'all particles' is off)."),
-            renderToggle("Disable rain splash particles", ft -> ft.disableRainSplashParticles,
-                (ft, v) -> ft.disableRainSplashParticles = v,
-                "Skip the splash particles rain makes on the ground.")));
-        this.list.addSmall(List.<AbstractWidget>of(
-            renderToggle("Hide item frames", ft -> ft.hideItemFrames,
-                (ft, v) -> ft.hideItemFrames = v,
-                "Do not render item frames or the items inside them. Big win in storage rooms."),
-            renderToggle("Hide armor stands", ft -> ft.hideArmorStands,
-                (ft, v) -> ft.hideArmorStands = v,
-                "Do not render armor stands or the gear on them.")));
-        this.list.addSmall(List.<AbstractWidget>of(
-            renderToggle("Hide paintings", ft -> ft.hidePaintings,
-                (ft, v) -> ft.hidePaintings = v,
-                "Do not render paintings hung on walls."),
-            renderToggle("Hide beacon beams", ft -> ft.hideBeaconBeams,
-                (ft, v) -> ft.hideBeaconBeams = v,
-                "Do not render the beam of light shot up by beacons.")));
-        this.list.addSmall(List.<AbstractWidget>of(
-            renderToggle("Hide moving pistons", ft -> ft.hideMovingPistons,
-                (ft, v) -> ft.hideMovingPistons = v,
-                "Skip the animated render of pistons while they extend or retract."),
-            renderToggle("Hide enchant table book", ft -> ft.hideEnchantTableBook,
-                (ft, v) -> ft.hideEnchantTableBook = v,
-                "Do not render the floating book above enchanting tables.")));
-        this.list.addSmall(List.<AbstractWidget>of(
-            renderToggle("Hide name tags", ft -> ft.hideNameTags,
-                (ft, v) -> ft.hideNameTags = v,
-                "Hide the floating names above players, mobs, and named entities."),
-            renderToggle("Hide sign text", ft -> ft.hideSignText,
-                (ft, v) -> ft.hideSignText = v,
-                "Skip rendering the text on signs. The sign board itself stays.")));
+        // Render feature toggles, grouped by the shared registry's categories.
+        for (Map.Entry<String, List<ToggleOption>> group
+                : AbtoOptionRegistry.byCategory().entrySet()) {
+            this.list.addHeader(Component.literal(group.getKey()));
+            List<ToggleOption> toggles = group.getValue();
+            for (int i = 0; i < toggles.size(); i += 2) {
+                if (i + 1 < toggles.size()) {
+                    this.list.addSmall(List.<AbstractWidget>of(
+                        renderToggle(toggles.get(i)), renderToggle(toggles.get(i + 1))));
+                } else {
+                    this.list.addSmall(List.<AbstractWidget>of(renderToggle(toggles.get(i))));
+                }
+            }
+        }
 
         this.list.addHeader(Component.literal("Video"));
         List<OptionInstance<?>> vanilla = VanillaVideoRows.collect(this.options);
@@ -120,25 +68,21 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
     }
 
     /**
-     * Builds an on/off button for one render toggle. Clicking it loads config, flips
-     * the FeatureToggles field, saves, and refreshes RenderToggles so the change takes
-     * effect live (the render mixins read RenderToggles).
+     * Builds an on/off button for one registry toggle. Clicking it flips the value
+     * via the registry (load, invert, save, refresh RenderToggles) so the change
+     * takes effect live. Definition, label, and tooltip all come from the shared
+     * ToggleOption so this screen and the Sodium screen stay in lockstep.
      */
-    private Button renderToggle(String name, Predicate<FeatureToggles> getter,
-            BiConsumer<FeatureToggles, Boolean> setter, String tip) {
-        boolean current = getter.test(ConfigStore.load(configPath()).featureToggles);
+    private Button renderToggle(ToggleOption option) {
+        boolean current = AbtoOptionRegistry.current(configPath(), option);
         return Button.builder(
-                Component.literal(name + ": " + onOff(current)),
+                Component.literal(option.name() + ": " + onOff(current)),
                 b -> {
-                    AbtoConfig c = ConfigStore.load(configPath());
-                    boolean next = !getter.test(c.featureToggles);
-                    setter.accept(c.featureToggles, next);
-                    ConfigStore.save(configPath(), c);
-                    RenderToggles.apply(c.featureToggles);
-                    b.setMessage(Component.literal(name + ": " + onOff(next)));
+                    boolean next = AbtoOptionRegistry.flip(configPath(), option);
+                    b.setMessage(Component.literal(option.name() + ": " + onOff(next)));
                 })
             .bounds(0, 0, 150, 20)
-            .tooltip(Tooltip.create(Component.literal(tip)))
+            .tooltip(Tooltip.create(Component.literal(option.tooltip())))
             .build();
     }
 
@@ -182,6 +126,30 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
             .tooltip(Tooltip.create(Component.literal(
                 "When supported, also tune detected performance mods (Sodium and friends) to match the preset.")))
             .build();
+    }
+
+    private Button uiStyleButton(AbtoConfig config) {
+        return Button.builder(
+                Component.literal("UI style: " + config.uiStyle.label()),
+                b -> {
+                    AbtoConfig c = ConfigStore.load(configPath());
+                    c.uiStyle = c.uiStyle.next();
+                    ConfigStore.save(configPath(), c);
+                    if (c.uiStyle == com.abto.config.UiStyle.SODIUM) {
+                        this.minecraft.setScreenAndShow(new AbtoSodiumScreen(this.lastParent()));
+                    } else {
+                        b.setMessage(Component.literal("UI style: " + c.uiStyle.label()));
+                    }
+                })
+            .bounds(0, 0, HALF_WIDTH, 20)
+            .tooltip(Tooltip.create(Component.literal(
+                "Switch between the Sodium-style and Minecraft-style settings screens.")))
+            .build();
+    }
+
+    /** The screen we return to on Done (the vanilla Options screen). */
+    private Screen lastParent() {
+        return this.lastScreen;
     }
 
     private Button runSetupButton() {
