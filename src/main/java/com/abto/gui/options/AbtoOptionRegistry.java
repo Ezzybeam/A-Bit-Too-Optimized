@@ -100,6 +100,12 @@ public final class AbtoOptionRegistry {
         new ToggleOption(CAT_ENTITIES, "Hide name tags",
             "Hide the floating names above players, mobs, and named entities.",
             ft -> ft.hideNameTags, (ft, v) -> ft.hideNameTags = v),
+        new ToggleOption(CAT_ENTITIES, "Hide player name tags",
+            "Hide only player names. Useful on servers.",
+            ft -> ft.hidePlayerNames, (ft, v) -> ft.hidePlayerNames = v),
+        new ToggleOption(CAT_ENTITIES, "Hide mob name tags",
+            "Hide names on every non-player entity (mobs, named animals, item frames).",
+            ft -> ft.hideMobNames, (ft, v) -> ft.hideMobNames = v),
         new ToggleOption(CAT_ENTITIES, "Hide sign text",
             "Skip rendering the text on signs. The sign board itself stays.",
             ft -> ft.hideSignText, (ft, v) -> ft.hideSignText = v)

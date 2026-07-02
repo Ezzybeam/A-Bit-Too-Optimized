@@ -27,6 +27,8 @@ public final class RenderToggles {
     private static volatile boolean hideMovingPistons;
     private static volatile boolean hideEnchantTableBook;
     private static volatile boolean hideNameTags;
+    private static volatile boolean hidePlayerNames;
+    private static volatile boolean hideMobNames;
     private static volatile boolean disableBlockParticles;
     private static volatile boolean disableRainSplashParticles;
     private static volatile boolean hideSignText;
@@ -57,6 +59,8 @@ public final class RenderToggles {
         hideMovingPistons = t.hideMovingPistons;
         hideEnchantTableBook = t.hideEnchantTableBook;
         hideNameTags = t.hideNameTags;
+        hidePlayerNames = t.hidePlayerNames;
+        hideMobNames = t.hideMobNames;
         disableBlockParticles = t.disableBlockParticles;
         disableRainSplashParticles = t.disableRainSplashParticles;
         hideSignText = t.hideSignText;
@@ -84,6 +88,8 @@ public final class RenderToggles {
     public static boolean hideMovingPistons() { return hideMovingPistons; }
     public static boolean hideEnchantTableBook() { return hideEnchantTableBook; }
     public static boolean hideNameTags() { return hideNameTags; }
+    public static boolean hidePlayerNames() { return hidePlayerNames; }
+    public static boolean hideMobNames() { return hideMobNames; }
     public static boolean disableBlockParticles() { return disableBlockParticles; }
     public static boolean disableRainSplashParticles() { return disableRainSplashParticles; }
     public static boolean hideSignText() { return hideSignText; }

@@ -32,6 +32,8 @@ public final class FeatureToggles {
     public boolean hideMovingPistons = false;
     public boolean hideEnchantTableBook = false;
     public boolean hideNameTags = false;
+    public boolean hidePlayerNames = false;
+    public boolean hideMobNames = false;
     public boolean disableBlockParticles = false;
     public boolean disableRainSplashParticles = false;
     public boolean hideSignText = false;
