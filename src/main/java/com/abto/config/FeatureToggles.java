@@ -52,6 +52,8 @@ public final class FeatureToggles {
     // Safe always-on optimizations (no visible change) so the mod boosts FPS with
     // no configuration, the way Sodium and friends do. Toggleable in Performance.
     public boolean cullLeaves = true;
+    public boolean disableBiomeColors = false;
+    public boolean disableSkyColors = false;
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();

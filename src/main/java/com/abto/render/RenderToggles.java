@@ -46,6 +46,8 @@ public final class RenderToggles {
     private static volatile boolean showCoords;
     private static volatile boolean showFacing;
     private static volatile boolean cullLeaves;
+    private static volatile boolean disableBiomeColors;
+    private static volatile boolean disableSkyColors;
 
     private RenderToggles() {
     }
@@ -86,6 +88,8 @@ public final class RenderToggles {
         showCoords = t.showCoords;
         showFacing = t.showFacing;
         cullLeaves = t.cullLeaves;
+        disableBiomeColors = t.disableBiomeColors;
+        disableSkyColors = t.disableSkyColors;
     }
 
     public static boolean hideClouds() { return hideClouds; }
@@ -123,4 +127,6 @@ public final class RenderToggles {
     public static boolean showCoords() { return showCoords; }
     public static boolean showFacing() { return showFacing; }
     public static boolean cullLeaves() { return cullLeaves; }
+    public static boolean disableBiomeColors() { return disableBiomeColors; }
+    public static boolean disableSkyColors() { return disableSkyColors; }
 }

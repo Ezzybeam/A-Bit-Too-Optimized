@@ -26,6 +26,7 @@ public final class AbtoOptionRegistry {
     public static final String CAT_PARTICLES = "Particles";
     public static final String CAT_ENTITIES = "Entities";
     public static final String CAT_BLOCKS = "Blocks";
+    public static final String CAT_COLORS = "Colors";
     public static final String CAT_HUD = "HUD";
 
     private static final List<ToggleOption> TOGGLES = List.of(
@@ -121,6 +122,12 @@ public final class AbtoOptionRegistry {
         new ToggleOption(CAT_BLOCKS, "Hide sign text",
             "Skip rendering the text on signs. The sign board itself stays.",
             ft -> ft.hideSignText, (ft, v) -> ft.hideSignText = v),
+
+        // Colors
+        new ToggleOption(CAT_COLORS, "Flatten biome colors",
+            "Use one fixed color for grass, foliage, and water instead of blending "
+                + "per biome. Removes color variation; small saving.",
+            ft -> ft.disableBiomeColors, (ft, v) -> ft.disableBiomeColors = v),
 
         // HUD (an on-screen overlay in the top-left corner)
         new ToggleOption(CAT_HUD, "Show FPS",

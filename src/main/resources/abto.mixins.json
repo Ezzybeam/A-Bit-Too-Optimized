@@ -23,7 +23,8 @@
     "SpriteAnimationMixin",
     "LevelExtractorMixin",
     "ParticleTypeMixin",
-    "LeavesCullingMixin"
+    "LeavesCullingMixin",
+    "BiomeColorMixin"
   ],
   "injectors": {
     "defaultRequire": 1
