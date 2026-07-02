@@ -156,7 +156,7 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
         return Button.builder(
                 Component.literal("Run setup again"),
                 b -> this.minecraft.setScreenAndShow(new AbtoWizardScreen(this)))
-            .bounds(0, 0, ROW_WIDTH, 20)
+            .bounds(0, 0, HALF_WIDTH, 20)
             .build();
     }
 

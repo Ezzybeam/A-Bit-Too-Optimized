@@ -96,17 +96,28 @@ public final class AbtoSodiumScreen extends Screen {
         if (options == null) {
             return;
         }
+        // Two columns so a tab with many toggles (Entities has 10) forms half as many
+        // rows and never has to compress to unreadable heights. Rows are laid out by
+        // ButtonColumn on the row count, so the column still fits any GUI scale.
+        int columns = options.size() > 5 ? 2 : 1;
+        int colGap = 6;
+        int colWidth = columns == 2 ? (panelWidth - colGap) / 2 : panelWidth;
+        int rows = (options.size() + columns - 1) / columns;
+
         int band = this.height - TOP - DESC_HEIGHT - FOOTER;
-        List<ButtonColumn.Slot> slots = ButtonColumn.layout(band, options.size(), 20, 24, 0);
+        List<ButtonColumn.Slot> slots = ButtonColumn.layout(band, rows, 20, 24, 0);
         for (int i = 0; i < options.size(); i++) {
             ToggleOption option = options.get(i);
-            ButtonColumn.Slot slot = slots.get(i);
+            int col = i % columns;
+            int row = i / columns;
+            ButtonColumn.Slot slot = slots.get(row);
+            int x = panelX + col * (colWidth + colGap);
             boolean current = AbtoOptionRegistry.current(configPath(), option);
             Button button = Button.builder(label(option.name(), current), b -> {
                     boolean next = AbtoOptionRegistry.flip(configPath(), option);
                     b.setMessage(label(option.name(), next));
                 })
-                .bounds(panelX, TOP + slot.y(), panelWidth, slot.height())
+                .bounds(x, TOP + slot.y(), colWidth, slot.height())
                 .build();
             this.addRenderableWidget(button);
             this.described.add(new DescribedButton(button, option.tooltip()));
@@ -114,9 +125,8 @@ public final class AbtoSodiumScreen extends Screen {
     }
 
     private void buildGeneral(int panelX, int panelWidth) {
-        List<Runnable> rowBuilders = new ArrayList<>();
         int band = this.height - TOP - DESC_HEIGHT - FOOTER;
-        // Five general controls, laid out in the same compressed column.
+        // Five general controls in a single full-width column.
         List<ButtonColumn.Slot> slots = ButtonColumn.layout(band, 5, 20, 24, 0);
 
         AbtoConfig config = ConfigStore.load(configPath());
