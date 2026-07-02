@@ -54,6 +54,9 @@ public final class FeatureToggles {
     public boolean cullLeaves = true;
     public boolean disableBiomeColors = false;
     public boolean disableSkyColors = false;
+    public int grassColorIndex = 0;
+    public int foliageColorIndex = 0;
+    public int waterColorIndex = 0;
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();

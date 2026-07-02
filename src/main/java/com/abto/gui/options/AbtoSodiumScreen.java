@@ -55,6 +55,7 @@ public final class AbtoSodiumScreen extends Screen {
         this.parent = parent;
         this.tabs.add(GENERAL);
         this.tabs.addAll(AbtoOptionRegistry.categories());
+        this.tabs.add(AbtoOptionRegistry.CAT_FUN);
         this.selected = GENERAL;
     }
 
@@ -79,6 +80,8 @@ public final class AbtoSodiumScreen extends Screen {
         int panelWidth = this.width - panelX - LEFT_X;
         if (this.selected.equals(GENERAL)) {
             buildGeneral(panelX, panelWidth);
+        } else if (this.selected.equals(AbtoOptionRegistry.CAT_FUN)) {
+            buildFun(panelX, panelWidth);
         } else {
             buildToggles(panelX, panelWidth);
         }
@@ -139,6 +142,29 @@ public final class AbtoSodiumScreen extends Screen {
             this.addRenderableWidget(button);
             this.described.add(new Described(button, desc));
         }
+    }
+
+    private void buildFun(int panelX, int panelWidth) {
+        int band = this.height - TOP - DESC_HEIGHT - FOOTER;
+        List<ButtonColumn.Slot> slots = ButtonColumn.layout(band, 3, 20, 24, 0);
+        addColorCycle(panelX, panelWidth, slots.get(0), "grass", "Grass color");
+        addColorCycle(panelX, panelWidth, slots.get(1), "foliage", "Foliage/leaf color");
+        addColorCycle(panelX, panelWidth, slots.get(2), "water", "Water color");
+    }
+
+    private void addColorCycle(int panelX, int panelWidth, ButtonColumn.Slot slot,
+            String which, String label) {
+        int idx = AbtoOptionRegistry.colorIndex(configPath(), which);
+        SodiumWidget widget = new SodiumWidget(panelX, TOP + slot.y(), panelWidth, slot.height(),
+                Component.literal(label + ": " + com.abto.render.FunColors.name(idx)),
+                () -> {
+                    AbtoOptionRegistry.cycleColor(configPath(), which,
+                        com.abto.render.FunColors.count());
+                    this.rebuildWidgets();
+                });
+        this.addRenderableWidget(widget);
+        this.described.add(new Described(widget,
+            "Recolor " + label.toLowerCase() + " to a fixed color. Changes appear as chunks reload."));
     }
 
     private void buildGeneral(int panelX, int panelWidth) {

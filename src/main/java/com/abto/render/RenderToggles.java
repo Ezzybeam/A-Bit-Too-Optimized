@@ -48,6 +48,9 @@ public final class RenderToggles {
     private static volatile boolean cullLeaves;
     private static volatile boolean disableBiomeColors;
     private static volatile boolean disableSkyColors;
+    private static volatile int grassColorIndex;
+    private static volatile int foliageColorIndex;
+    private static volatile int waterColorIndex;
 
     private RenderToggles() {
     }
@@ -90,6 +93,9 @@ public final class RenderToggles {
         cullLeaves = t.cullLeaves;
         disableBiomeColors = t.disableBiomeColors;
         disableSkyColors = t.disableSkyColors;
+        grassColorIndex = t.grassColorIndex;
+        foliageColorIndex = t.foliageColorIndex;
+        waterColorIndex = t.waterColorIndex;
     }
 
     public static boolean hideClouds() { return hideClouds; }
@@ -129,4 +135,7 @@ public final class RenderToggles {
     public static boolean cullLeaves() { return cullLeaves; }
     public static boolean disableBiomeColors() { return disableBiomeColors; }
     public static boolean disableSkyColors() { return disableSkyColors; }
+    public static int grassColorIndex() { return grassColorIndex; }
+    public static int foliageColorIndex() { return foliageColorIndex; }
+    public static int waterColorIndex() { return waterColorIndex; }
 }

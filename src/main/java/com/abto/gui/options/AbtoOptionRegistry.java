@@ -2,6 +2,7 @@ package com.abto.gui.options;
 
 import com.abto.config.AbtoConfig;
 import com.abto.config.ConfigStore;
+import com.abto.config.FeatureToggles;
 import com.abto.render.RenderToggles;
 
 import java.nio.file.Path;
@@ -28,6 +29,7 @@ public final class AbtoOptionRegistry {
     public static final String CAT_BLOCKS = "Blocks";
     public static final String CAT_COLORS = "Colors";
     public static final String CAT_HUD = "HUD";
+    public static final String CAT_FUN = "Fun";
 
     private static final List<ToggleOption> TOGGLES = List.of(
         // Performance (real optimizations that keep visuals intact)
@@ -172,6 +174,31 @@ public final class AbtoOptionRegistry {
     /** Current persisted value of a toggle. */
     public static boolean current(Path configPath, ToggleOption option) {
         return option.getter().test(ConfigStore.load(configPath).featureToggles);
+    }
+
+    /** Current palette index for a Fun-tab color ("grass", "foliage", or "water"). */
+    public static int colorIndex(Path configPath, String which) {
+        FeatureToggles ft = ConfigStore.load(configPath).featureToggles;
+        return switch (which) {
+            case "grass" -> ft.grassColorIndex;
+            case "foliage" -> ft.foliageColorIndex;
+            default -> ft.waterColorIndex;
+        };
+    }
+
+    /** Advance a Fun-tab color to the next palette entry; returns the new index. */
+    public static int cycleColor(Path configPath, String which, int paletteSize) {
+        AbtoConfig c = ConfigStore.load(configPath);
+        FeatureToggles ft = c.featureToggles;
+        int next;
+        switch (which) {
+            case "grass" -> ft.grassColorIndex = next = (ft.grassColorIndex + 1) % paletteSize;
+            case "foliage" -> ft.foliageColorIndex = next = (ft.foliageColorIndex + 1) % paletteSize;
+            default -> ft.waterColorIndex = next = (ft.waterColorIndex + 1) % paletteSize;
+        }
+        ConfigStore.save(configPath, c);
+        RenderToggles.apply(ft);
+        return next;
     }
 
     /**

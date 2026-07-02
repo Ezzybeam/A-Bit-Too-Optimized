@@ -74,9 +74,30 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
             }
         }
 
+        this.list.addHeader(Component.literal("Fun"));
+        this.list.addSmall(List.<AbstractWidget>of(
+            colorButton("grass", "Grass color"), colorButton("foliage", "Foliage color")));
+        this.list.addSmall(List.<AbstractWidget>of(colorButton("water", "Water color")));
+
         this.list.addHeader(Component.literal("Video"));
         List<OptionInstance<?>> vanilla = VanillaVideoRows.collect(this.options);
         this.list.addSmall(vanilla.toArray(new OptionInstance<?>[0]));
+    }
+
+    private Button colorButton(String which, String label) {
+        int idx = AbtoOptionRegistry.colorIndex(configPath(), which);
+        return Button.builder(
+                Component.literal(label + ": " + com.abto.render.FunColors.name(idx)),
+                b -> {
+                    int next = AbtoOptionRegistry.cycleColor(configPath(), which,
+                        com.abto.render.FunColors.count());
+                    b.setMessage(Component.literal(label + ": "
+                        + com.abto.render.FunColors.name(next)));
+                })
+            .bounds(0, 0, HALF_WIDTH, 20)
+            .tooltip(Tooltip.create(Component.literal(
+                "Recolor " + label.toLowerCase() + " to a fixed fun color.")))
+            .build();
     }
 
     /**
