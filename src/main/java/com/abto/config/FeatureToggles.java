@@ -35,6 +35,10 @@ public final class FeatureToggles {
     public boolean disableBlockParticles = false;
     public boolean disableRainSplashParticles = false;
     public boolean hideSignText = false;
+    public boolean disableWaterAnimation = false;
+    public boolean disableLavaAnimation = false;
+    public boolean disableFireAnimation = false;
+    public boolean disablePortalAnimation = false;
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();

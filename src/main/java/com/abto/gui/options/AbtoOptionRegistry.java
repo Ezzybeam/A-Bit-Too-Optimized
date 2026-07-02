@@ -52,6 +52,18 @@ public final class AbtoOptionRegistry {
         new ToggleOption(CAT_ANIM, "Disable weather",
             "Do not render rain or snow. A solid FPS win in storms.",
             ft -> ft.disableWeatherRendering, (ft, v) -> ft.disableWeatherRendering = v),
+        new ToggleOption(CAT_ANIM, "Freeze water animation",
+            "Stop animating water textures (only when 'disable block animations' is off).",
+            ft -> ft.disableWaterAnimation, (ft, v) -> ft.disableWaterAnimation = v),
+        new ToggleOption(CAT_ANIM, "Freeze lava animation",
+            "Stop animating lava textures (only when 'disable block animations' is off).",
+            ft -> ft.disableLavaAnimation, (ft, v) -> ft.disableLavaAnimation = v),
+        new ToggleOption(CAT_ANIM, "Freeze fire animation",
+            "Stop animating fire and campfire textures.",
+            ft -> ft.disableFireAnimation, (ft, v) -> ft.disableFireAnimation = v),
+        new ToggleOption(CAT_ANIM, "Freeze portal animation",
+            "Stop animating the nether portal texture.",
+            ft -> ft.disablePortalAnimation, (ft, v) -> ft.disablePortalAnimation = v),
 
         // Particles
         new ToggleOption(CAT_PARTICLES, "Disable all particles",

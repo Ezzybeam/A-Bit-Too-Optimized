@@ -20,7 +20,8 @@
     "EnchantTableRendererMixin",
     "EntityNameTagMixin",
     "SignTextMixin",
-    "EntityRenderDispatcherMixin"
+    "EntityRenderDispatcherMixin",
+    "SpriteAnimationMixin"
   ],
   "injectors": {
     "defaultRequire": 1

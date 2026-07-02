@@ -32,6 +32,10 @@ public final class RenderToggles {
     private static volatile boolean hideSignText;
     private static volatile boolean dynamicFps = true;
     private static volatile boolean entityCulling = true;
+    private static volatile boolean disableWaterAnimation;
+    private static volatile boolean disableLavaAnimation;
+    private static volatile boolean disableFireAnimation;
+    private static volatile boolean disablePortalAnimation;
 
     private RenderToggles() {
     }
@@ -58,6 +62,10 @@ public final class RenderToggles {
         hideSignText = t.hideSignText;
         dynamicFps = t.dynamicFps;
         entityCulling = t.entityCulling;
+        disableWaterAnimation = t.disableWaterAnimation;
+        disableLavaAnimation = t.disableLavaAnimation;
+        disableFireAnimation = t.disableFireAnimation;
+        disablePortalAnimation = t.disablePortalAnimation;
     }
 
     public static boolean hideClouds() { return hideClouds; }
@@ -81,4 +89,8 @@ public final class RenderToggles {
     public static boolean hideSignText() { return hideSignText; }
     public static boolean dynamicFps() { return dynamicFps; }
     public static boolean entityCulling() { return entityCulling; }
+    public static boolean disableWaterAnimation() { return disableWaterAnimation; }
+    public static boolean disableLavaAnimation() { return disableLavaAnimation; }
+    public static boolean disableFireAnimation() { return disableFireAnimation; }
+    public static boolean disablePortalAnimation() { return disablePortalAnimation; }
 }
