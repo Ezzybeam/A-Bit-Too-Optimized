@@ -32,11 +32,12 @@ public final class AbtoOptionRegistry {
         // Performance (real optimizations that keep visuals intact)
         new ToggleOption(CAT_PERF, "Entity culling",
             "Skip drawing entities fully hidden behind solid blocks. No visual change; "
-                + "saves GPU work in walled-off areas like mob farms.",
+                + "saves GPU work in walled-off areas like mob farms. Deferred to Sodium "
+                + "when Sodium is installed.",
             ft -> ft.entityCulling, (ft, v) -> ft.entityCulling = v),
         new ToggleOption(CAT_PERF, "Leaves culling",
             "Skip the hidden interior faces between leaf blocks. No visible change; "
-                + "a real FPS win in forests. Has no effect when Sodium is installed.",
+                + "a real FPS win in forests. Deferred to Sodium when it is installed.",
             ft -> ft.cullLeaves, (ft, v) -> ft.cullLeaves = v),
 
         // Sky and Fog

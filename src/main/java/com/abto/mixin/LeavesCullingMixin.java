@@ -1,5 +1,6 @@
 package com.abto.mixin;
 
+import com.abto.compat.SodiumCompat;
 import com.abto.render.RenderToggles;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.core.Direction;
@@ -28,7 +29,7 @@ public class LeavesCullingMixin {
         at = @At("RETURN"))
     private static boolean abto$cullLeafFaces(boolean original, BlockState state,
             BlockState neighbor, Direction direction) {
-        if (original && RenderToggles.cullLeaves()
+        if (original && RenderToggles.cullLeaves() && !SodiumCompat.isSodiumLoaded()
                 && state.getBlock() instanceof LeavesBlock
                 && neighbor.getBlock() instanceof LeavesBlock) {
             return false;

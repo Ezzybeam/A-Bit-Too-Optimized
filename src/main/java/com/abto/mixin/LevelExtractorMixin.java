@@ -1,5 +1,6 @@
 package com.abto.mixin;
 
+import com.abto.compat.SodiumCompat;
 import com.abto.render.EntityCuller;
 import com.abto.render.RenderToggles;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -29,7 +30,7 @@ public class LevelExtractorMixin {
     @ModifyReturnValue(method = "isEntityVisible", at = @At("RETURN"), require = 0)
     private boolean abto$occlusionCull(boolean original, Entity entity, Frustum frustum,
             double camX, double camY, double camZ) {
-        if (original && RenderToggles.entityCulling()
+        if (original && RenderToggles.entityCulling() && !SodiumCompat.isSodiumLoaded()
                 && EntityCuller.isOccluded(entity, camX, camY, camZ)) {
             return false;
         }

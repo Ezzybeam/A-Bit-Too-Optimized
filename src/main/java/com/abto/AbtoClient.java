@@ -41,6 +41,10 @@ public final class AbtoClient implements ClientModInitializer {
         Abto.LOGGER.info("A Bit Too Optimized loaded. Selected preset: {}. Recommended for this machine: {}. Known perf mods present: {}.",
             config.selectedPreset, recommended, presentMods);
 
+        if (com.abto.compat.SodiumCompat.isSodiumLoaded()) {
+            Abto.LOGGER.info("Sodium detected. Deferring leaves culling and entity culling to Sodium; all other ABTO features remain active.");
+        }
+
         if (config.selectedPreset != Preset.CUSTOM) {
             Minecraft client = Minecraft.getInstance();
             if (client != null && client.options != null) {
