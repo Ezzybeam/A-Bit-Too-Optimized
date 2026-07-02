@@ -143,7 +143,7 @@ public final class AbtoSodiumScreen extends Screen {
 
     private void buildGeneral(int panelX, int panelWidth) {
         int band = this.height - TOP - DESC_HEIGHT - FOOTER;
-        List<ButtonColumn.Slot> slots = ButtonColumn.layout(band, 5, 20, 24, 0);
+        List<ButtonColumn.Slot> slots = ButtonColumn.layout(band, 6, 20, 24, 0);
         AbtoConfig config = ConfigStore.load(configPath());
 
         PresetButtonList.Entry entry = entryFor(config.selectedPreset);
@@ -179,6 +179,11 @@ public final class AbtoSodiumScreen extends Screen {
         addGeneral(panelX, panelWidth, slots.get(4), SodiumWidget.Role.PLAIN, false,
             Component.literal("Run setup again"), "Re-run the first-run setup wizard.",
             () -> this.minecraft.setScreenAndShow(new AbtoWizardScreen(this)));
+
+        addGeneral(panelX, panelWidth, slots.get(5), SodiumWidget.Role.PLAIN, false,
+            Component.literal("Vanilla video settings..."),
+            "Open the full vanilla video options (render distance, graphics, and more).",
+            () -> this.minecraft.setScreenAndShow(new AbtoVideoScreen(this)));
     }
 
     private void addGeneral(int panelX, int panelWidth, ButtonColumn.Slot slot,
