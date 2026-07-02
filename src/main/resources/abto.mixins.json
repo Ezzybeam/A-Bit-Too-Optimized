@@ -15,7 +15,9 @@
     "ItemFrameRendererMixin",
     "ArmorStandRendererMixin",
     "PaintingRendererMixin",
-    "BeaconRendererMixin"
+    "BeaconRendererMixin",
+    "PistonHeadRendererMixin",
+    "EnchantTableRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

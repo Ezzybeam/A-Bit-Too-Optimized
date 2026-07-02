@@ -92,6 +92,13 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
             renderToggle("Hide beacon beams", ft -> ft.hideBeaconBeams,
                 (ft, v) -> ft.hideBeaconBeams = v,
                 "Do not render the beam of light shot up by beacons.")));
+        this.list.addSmall(List.<AbstractWidget>of(
+            renderToggle("Hide moving pistons", ft -> ft.hideMovingPistons,
+                (ft, v) -> ft.hideMovingPistons = v,
+                "Skip the animated render of pistons while they extend or retract."),
+            renderToggle("Hide enchant table book", ft -> ft.hideEnchantTableBook,
+                (ft, v) -> ft.hideEnchantTableBook = v,
+                "Do not render the floating book above enchanting tables.")));
 
         this.list.addHeader(Component.literal("Video"));
         List<OptionInstance<?>> vanilla = VanillaVideoRows.collect(this.options);
