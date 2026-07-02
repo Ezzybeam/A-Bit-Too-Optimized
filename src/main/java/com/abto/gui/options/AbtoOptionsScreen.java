@@ -109,7 +109,10 @@ public final class AbtoOptionsScreen extends OptionsSubScreen {
         this.list.addSmall(List.<AbstractWidget>of(
             renderToggle("Hide name tags", ft -> ft.hideNameTags,
                 (ft, v) -> ft.hideNameTags = v,
-                "Hide the floating names above players, mobs, and named entities.")));
+                "Hide the floating names above players, mobs, and named entities."),
+            renderToggle("Hide sign text", ft -> ft.hideSignText,
+                (ft, v) -> ft.hideSignText = v,
+                "Skip rendering the text on signs. The sign board itself stays.")));
 
         this.list.addHeader(Component.literal("Video"));
         List<OptionInstance<?>> vanilla = VanillaVideoRows.collect(this.options);

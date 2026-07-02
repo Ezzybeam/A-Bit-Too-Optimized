@@ -34,6 +34,7 @@ public final class FeatureToggles {
     public boolean hideNameTags = false;
     public boolean disableBlockParticles = false;
     public boolean disableRainSplashParticles = false;
+    public boolean hideSignText = false;
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();

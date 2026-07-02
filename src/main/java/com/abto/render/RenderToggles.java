@@ -29,6 +29,7 @@ public final class RenderToggles {
     private static volatile boolean hideNameTags;
     private static volatile boolean disableBlockParticles;
     private static volatile boolean disableRainSplashParticles;
+    private static volatile boolean hideSignText;
     private static volatile boolean dynamicFps = true;
 
     private RenderToggles() {
@@ -53,6 +54,7 @@ public final class RenderToggles {
         hideNameTags = t.hideNameTags;
         disableBlockParticles = t.disableBlockParticles;
         disableRainSplashParticles = t.disableRainSplashParticles;
+        hideSignText = t.hideSignText;
         dynamicFps = t.dynamicFps;
     }
 
@@ -74,5 +76,6 @@ public final class RenderToggles {
     public static boolean hideNameTags() { return hideNameTags; }
     public static boolean disableBlockParticles() { return disableBlockParticles; }
     public static boolean disableRainSplashParticles() { return disableRainSplashParticles; }
+    public static boolean hideSignText() { return hideSignText; }
     public static boolean dynamicFps() { return dynamicFps; }
 }

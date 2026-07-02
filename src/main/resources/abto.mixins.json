@@ -18,7 +18,8 @@
     "BeaconRendererMixin",
     "PistonHeadRendererMixin",
     "EnchantTableRendererMixin",
-    "EntityNameTagMixin"
+    "EntityNameTagMixin",
+    "SignTextMixin"
   ],
   "injectors": {
     "defaultRequire": 1
