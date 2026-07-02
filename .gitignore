@@ -1,11 +1,33 @@
+# Gradle
 .gradle/
 build/
 versions/*/build/
+
+# Minecraft dev runtime
 run/
-*.log
-.idea/
-*.iml
-.DS_Store
-.superpowers/
+
+# Build outputs
 dist/
 archive/
+
+# Logs and crash dumps
+*.log
+hs_err_pid*.log
+replay_pid*.log
+crash-reports/
+
+# IDEs and editors
+.idea/
+*.iml
+.vscode/
+bin/
+out/
+*.class
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local tool state (not shared)
+.superpowers/
+.claude/
