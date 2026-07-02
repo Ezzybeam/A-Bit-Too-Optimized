@@ -49,7 +49,9 @@ public final class FeatureToggles {
     public boolean showFps = false;
     public boolean showCoords = false;
     public boolean showFacing = false;
-    public boolean cullLeaves = false;
+    // Safe always-on optimizations (no visible change) so the mod boosts FPS with
+    // no configuration, the way Sodium and friends do. Toggleable in Performance.
+    public boolean cullLeaves = true;
 
     public static FeatureToggles defaults() {
         return new FeatureToggles();
